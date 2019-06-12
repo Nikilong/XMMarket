@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    button,
+    input {
+        border: thin solid gray;
+    }
+    
+    #holder {
+        border: 10px dashed #ccc;
+        width: 300px;
+        min-height: 300px;
+        margin: 20px auto;
+    }
+    
+    #holder.hover {
+        border: 10px dashed #0c0;
+    }
+</style>
+
+<body>
+    <!-- form手动选择上传 -->
+    <!-- <form method="POST" action="localhost:4000/upload" enctype="multipart/form-data"> -->
+    <form method="POST" action="https://sm.ms/api/upload" enctype="multipart/form-data">
+        <!-- file:<input name="file" type="file"></br> -->
+        <input type="file" id="upload" name="smfile" />
+        <input type="file" id="upload" name="smfile" />
+        <input id="submitBtn" type="submit"></br>
+    </form>
+
+    <div style="width:100%;text-align: center;">拖拽文件到下面的框进行上传</div>
+    <div id="holder">
+    </div>
+    <progress id="uploadprogress" min="0" max="100" value="0" style="width:100%;">0</progress>
+
+</body>
+<script src="./assets/jquery-3.3.1.min.js"></script>
+<script>
+    // 检查浏览器是否支持拖放上传。
+    if ('draggable' in document.createElement('span')) {
+        var holder = document.getElementById('holder');
+        holder.ondragover = function() {
+            this.className = 'hover';
+            return false;
+        };
+
+        holder.ondragend = function() {
+            this.className = '';
+            return false;
+        };
+
+        holder.ondrop = function(event) {
+            event.preventDefault();
+            this.className = '';
+            var files = event.dataTransfer.files;
+
+            // 检查是否支持FormData
+            if (window.FormData) {
+                var formData = new FormData();
+                // 建立一个upload表单项，值为上传的文件,"file"是与后台约定的字段
+                formData.append('file', files[0]);
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('POST', "http://192.168.1.101:4000/upload");
+
+                // 定义上传完成后的回调函数
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        console.log('上传成功');
+                    } else {
+                        console.log('出错了');
+                    }
+                };
+
+                // 上传进度条
+                xhr.upload.onprogress = function(event) {
+                    if (event.lengthComputable) {
+                        var complete = (event.loaded / event.total * 100 | 0);
+                        var progress = document.getElementById('uploadprogress');
+                        progress.value = progress.innerHTML = complete;
+                    }
+                };
+
+                xhr.send(formData);
+            }
+        };
+    }
+</script>
+
+</html>

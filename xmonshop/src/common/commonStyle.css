@@ -1,0 +1,243 @@
+/* color------start */
+
+.c_yellow {
+    color: yellow;
+}
+
+.c-red {
+    color: red;
+}
+
+.bg-gray {
+    background: gray;
+}
+
+.bg-darkgray {
+    background: darkgray;
+}
+
+
+/* color------start */
+
+
+/* icon------start */
+
+.toTop_icon {
+    background: url("../assets/icons/toTop_icon.svg");
+    background-size: cover;
+}
+
+.cart_float_icon {
+    background: url("../assets/icons/cart_float_icon.svg");
+    background-size: cover;
+}
+
+.home_icon {
+    background: url("../assets/icons/home_icon.svg");
+    background-size: cover;
+}
+
+.cart_icon {
+    background: url("../assets/icons/cart_icon.svg");
+    background-size: cover;
+}
+
+.check_box_empty {
+    background: url("../assets/icons/check_box_empty.svg");
+    background-size: cover;
+}
+
+.check_box_select {
+    background: url("../assets/icons/check_box_select.svg");
+    background-size: cover;
+}
+
+.pro_cell_del_btn {
+    background: url("../assets/icons/delete_icon.svg");
+    background-size: cover;
+}
+
+.back_icon {
+    background: url("../assets/icons/back_icon.svg");
+    background-size: cover;
+}
+
+
+/* icon------end */
+
+
+/* animate------start */
+
+.v-animate-bounce-enter-active {
+    animation: bounce-in 1.0s
+}
+
+.v-animate-bounce-leave-active {
+    animation: bounce-in 1.0s reverse;
+}
+
+@-webkit-keyframes bounce-in {
+    0% {
+        transform: scale(0)
+    }
+    50% {
+        transform: scale(1.2)
+    }
+    100% {
+        transform: scale(1)
+    }
+}
+
+
+/* 底部弹出  */
+
+.animate_pullUp {
+    position: absolute;
+    top: 0;
+    -webkit-animation-name: pullUp;
+    -webkit-animation-duration: 0.25s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-delay: 0s;
+}
+
+@-webkit-keyframes pullUp {
+    0% {
+        top: 100%;
+        opacity: 0.5;
+    }
+    25% {
+        top: 75%;
+    }
+    50% {
+        top: 50%;
+        opacity: 1;
+    }
+    75% {
+        top: 25%;
+    }
+    100% {
+        top: 0%;
+    }
+}
+
+
+/* 底部收起 */
+
+.animate_pullDown {
+    position: absolute;
+    top: 100%;
+    overflow-y: hidden;
+    -webkit-animation-name: pullDown;
+    -webkit-animation-duration: 0.25s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-delay: 0s;
+}
+
+@-webkit-keyframes pullDown {
+    0% {
+        top: 0%
+    }
+    25% {
+        top: 25%
+    }
+    50% {
+        top: 50%
+    }
+    75% {
+        top: 75%
+    }
+    100% {
+        top: 100%
+    }
+}
+
+
+/* 淡入 */
+
+.animate_fadeIn {
+    -webkit-animation-name: fadeIn;
+    /*动画名称*/
+    -webkit-animation-duration: 0.25s;
+    /*动画持续时间*/
+    -webkit-animation-iteration-count: 1;
+    /*动画次数*/
+    -webkit-animation-delay: 0s;
+    /*延迟时间*/
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.v-animate-slideToLeft-enter-active {
+    animation: slideToLeft 1.0s;
+}
+
+.v-animate-slideToLeft-leave-active {
+    animation: slideToLeft 1.0s reverse;
+}
+
+@-webkit-keyframes slideToLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(100%)
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0)
+    }
+}
+
+.v-animate-slideToTop-enter-active {
+    animation: slideToTop 1.0s;
+}
+
+.v-animate-slideToTop-leave-active {
+    animation: slideToTop 1.0s reverse;
+}
+
+@-webkit-keyframes slideToTop {
+    0% {
+        opacity: 0;
+        transform: translateY(100%)
+    }
+    /* 50% {
+        opacity: 0.5;
+        transform: translateY(30%)
+    } */
+    100% {
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+
+
+/* animate------end */
+
+
+/* ft------start */
+
+.ft_bar {
+    position: fixed;
+    bottom: 0;
+    /* height: 2.2rem; */
+    width: 100%;
+    background: white;
+}
+
+.tool_bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* ft------end */
