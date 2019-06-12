@@ -1,29 +1,29 @@
 <template>
   <div class="container" style="background:#f6f6f6;">
-		<!-- 购物车页面 -->
-		<!-- <xmcarts v-if="showCarts" :class="{'animate_pullUp':showCarts}" :cartsData="cartList" @backStep="showCartsPage"></xmcarts> -->
 		<!-- 提醒类 -->
 		<confirm v-model="showLoginConfirm" content="需要登录才能进行该操作,是否前往登录?" @on-confirm="toLoginPage"></confirm>
 
 		<!-- 主体 -->
 		<div v-if="!showCarts">
 			<popup v-model="showComno" position="bottom" max-height="60%" style="background:white;">
-				<p class="total_price_lab">共计:￥{{totalPrice}}</p>
-				<div class="combo_cell" v-for="item,groIndex in combo">
-					<p v-text="item.name" class="combo_title"></p>
-					<div class="combo_check_div">
-						<!-- <span class="combo_checkbox" :class="{combo_checkbox_select:index===item.selectIndex}"  v-text="ele.type" v-for="ele,index in item.values" @click="selectComboCheck(groIndex,index,ele.price)"></span> -->
-						<span class="combo_checkbox" :class="{combo_checkbox_select:index===item.selectIndex}"  v-text="ele.type" v-for="ele,index in item.values" @click="selectComboCheck(groIndex,index,ele.price)"></span>
-					</div>
+				<div class="popup_content">
+					<p class="total_price_lab">共计:￥{{totalPrice}}</p>
+					<div class="combo_cell" v-for="item,groIndex in combo">
+						<p v-text="item.name" class="combo_title"></p>
+						<div class="combo_check_div">
+							<!-- <span class="combo_checkbox" :class="{combo_checkbox_select:index===item.selectIndex}"  v-text="ele.type" v-for="ele,index in item.values" @click="selectComboCheck(groIndex,index,ele.price)"></span> -->
+							<span class="combo_checkbox" :class="{combo_checkbox_select:index===item.selectIndex}"  v-text="ele.type" v-for="ele,index in item.values" @click="selectComboCheck(groIndex,index,ele.price)"></span>
+						</div>
 
-				</div>
-				<div class="combo_cell_num">
-						<x-number title="购买数量" align="right"  button-style="square" :min="1" :max="99" v-model="proNum" :fillable="true"></x-number>
+					</div>
+					<div class="combo_cell_num">
+							<x-number title="购买数量" align="right"  button-style="square" :min="1" :max="99" v-model="proNum" :fillable="true"></x-number>
+					</div>
 				</div>
 				<div class="xm_btn" @click="comboDidClick">确定</div>
 			</popup>
 				
-			<!-- <div class="detail_photo_div">
+			<div class="detail_photo_div">
 				<img :src="itemData.pic">
 			</div>
 			<div class="detail_content">
@@ -39,7 +39,7 @@
 			</div>
 			<div class="detail_photo_div" v-if="detailImgs.length > 0" style="margin-bottom:3rem;">
 				<img :src="url" v-for="url in detailImgs"> 
-			</div> -->
+			</div>
 
 			<div class="ft_bar">
 				<div class="tool_bar">
@@ -305,7 +305,27 @@ export default {
 				}
 			});
 		},
+		stopBodyScroll:function (isFixed) 
+		{
+			if (isFixed) {
+				document.body.style.position = 'fixed'
+				this.top = window.scrollY //并没有起到作用，但是最好是加上当
+				document.body.style.top = -this.top + 'px' //同上
+			} else {
+				document.body.style.position = ''
+				document.body.style.top = '' //并没有起到作用，但是最好是加上当
+				window.scrollTo(0, this.top) //同上
+			}
+		}
 		
+	},
+	watch:{
+		showComno: {
+			deep: true,
+			handler: function (newV, oldV) {
+				this.stopBodyScroll(newV)
+			}
+		},
 	},
 	created: function() 
 	{
@@ -443,7 +463,13 @@ export default {
 	background: darkgray;
 	color: white;
 }
+
+.popup_content{
+	margin-bottom: 3rem;
+}
 .xm_btn{
+	position: fixed;;
+	bottom: 0;
 	width:100%;
 	height: 3rem;
 	/* background: #4D3126; */

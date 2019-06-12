@@ -50,7 +50,7 @@ export default {
     return {
       showTabbar:true,
       activeTab:0,   // 当前选中的tab
-      cartsCount:0,  // 购物车数量
+      cartsCount:"0",  // 购物车数量
     };
   },
   created: function() {
@@ -96,7 +96,7 @@ export default {
 			}).then(function(response) {
 				console.log(response.data);
 				if (response.data.status === "success") {
-					_this.cartsCount = response.data.cartList.length
+					_this.cartsCount = String(response.data.cartList.length)
 				} else {
 					alert(response.data.msg)
 				}
