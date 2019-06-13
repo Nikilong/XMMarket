@@ -55,30 +55,31 @@ export default {
   },
   created: function() {
     let _this = this
-    window.addEventListener("message",function(msg){
-      if(msg.data === "showHome"){
-        _this.showTabbar = true
-        _this.activeTab = 0
-        _this.updateCart()
-      }else if(msg.data === "showCarts"){
-        _this.showTabbar = true
-        _this.activeTab = 1
-        _this.updateCart()
-      }else if(msg.data === "showSetting"){
-        _this.showTabbar = true
-        _this.activeTab = 2
-        _this.updateCart()
-      }else if(msg.data === "hideTabbar"){
-        _this.showTabbar = false
-      }
-    },false)
+    window.addEventListener("message",this.handleMessage,false)
   },
   destroyed:function(){
-    window.removeEventListener("message")
+    window.removeEventListener("message",this.handleMessage,false)
   },
   methods:{
+    handleMessage:function(msg){
+      if(msg.data === "showHome"){
+        this.showTabbar = true
+        this.activeTab = 0
+        this.updateCart()
+      }else if(msg.data === "showCarts"){
+        this.showTabbar = true
+        this.activeTab = 1
+        this.updateCart()
+      }else if(msg.data === "showSetting"){
+        this.showTabbar = true
+        this.activeTab = 2
+        this.updateCart()
+      }else if(msg.data === "hideTabbar"){
+        this.showTabbar = false
+      }
+
+    },
     tabbarDidClick:function(index,preIndex){
-      console.log(index,preIndex)
       this.activeTab = index
     },
     updateCart:function() // 更新购物车数量
