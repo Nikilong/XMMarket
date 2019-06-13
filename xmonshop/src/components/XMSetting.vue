@@ -1,12 +1,87 @@
 <template>
   <div class="container">
-      <div class="user_nav_tool">
-				<span>{{userName===""?"您好,请":"欢迎您,"+userName}}</span>
-				<span class="logout_btn c-red" @click="logout">{{userName===""?"登录":"注销"}}</span>
-			</div>
+	<group >
+      <cell :title="userName" inline-desc="已绑定微信">
+        <img slot="icon" width="50" style="display:block;margin-right:5px;" src="../assets/icons/avartar_icon.svg">
+		<button class="logout_btn c-red"  @click="logout">{{userName===""?"登录":"注销"}}</button>
+      </cell>
+    </group>
+
+	  <div class="version_div">
+		  <span class="welcome_tip">亲，欢迎光临XMShop!</span>
+		  <span class="version_tip">版本1.0.0</span>
+	  </div>
       <group>
-        <cell title="添加商品" value-align="left" is-link></cell>
-      </group>    
+        <cell title="我的订单"  is-link>查看全部订单</cell>
+		<grid :show-lr-borders="false" :show-vertical-dividers="false">
+			<grid-item link="/component/cell" label="待付款">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="待发货">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="待收货">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="待评价">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="退货/退款">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+		</grid>
+      </group>   
+
+      <group>
+        <cell title="我的服务"></cell>
+		<grid :show-lr-borders="false" :show-vertical-dividers="false">
+			<grid-item link="/component/cell" label="优惠券">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="收藏">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="到货提醒">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="地址">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+		</grid>
+		<grid :show-lr-borders="false" :show-vertical-dividers="false">
+			<grid-item link="/component/cell" label="品牌日志">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="客服信息">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="系统反馈">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="服务条款">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+		</grid>
+      </group>   
+
+      <group>
+        <cell title="商家功能"></cell>
+		<grid :show-lr-borders="false" :show-vertical-dividers="false">
+			<grid-item link="/component/cell" label="增加商品">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="修改商品">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="处理退款">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+			<grid-item link="/component/cell" label="查看订单">
+				<img slot="icon" src="../assets/icons/home_icon.svg">
+			</grid-item>
+		</grid>
+      </group>   
+
   </div>
 </template>
 
@@ -15,13 +90,13 @@
 <script>
 
 import commonUtil from "../common/common"
-import { Loading,Cell,Group } from "vux"
+import { Loading,Cell,Group,Grid, GridItem } from "vux"
 
 
 export default {
   name: "xmboss",
   components: {
-    Loading,Cell,Group
+    Loading,Cell,Group,Grid, GridItem
 	},
    props:[],
   data() {
@@ -87,23 +162,34 @@ export default {
 };
 </script>
 
-<style scoped>
+<style  scoped>
 @import '../common/commonStyle';
 .container{
-	margin-top: 40px;
+	margin-bottom: 3rem;
 }
 
-.user_nav_tool {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+.logout_btn {
+  text-decoration: red;
   border: 1px solid gray;
   border-radius: 0.5rem;
   padding: 0.2rem 0.8rem;
-  font-size: 0.8rem;
+  background: transparent;
 }
-.logout_btn {
-  text-decoration: red;
+
+.version_div{
+	height: 1rem;
+	background: gray;
+	font-size: .5rem;
+	color: white;
+	text-align: left;
+	padding-left: 1rem;
+}
+.welcome_tip{
+
+}
+.version_tip{
+	float: right;
+	padding-right: 1rem;
 }
 
 </style>

@@ -126,13 +126,20 @@ a{
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* todo:待去掉这个text-align: center;属性,然后所有页面做适配 */
+  text-align: center;  
   color: #2c3e50;
   /* margin-top: 60px; */
 }
 
-/* .content{
-  height: 100px;
-} */
+/* ------------------------weui统一样式 start------------------------ */
+.weui-grid__label{
+  font-size: 0.5rem !important;
+}
+/* todo:去掉#pp */
+.vux-cell-bd,.vux-cell-primary p{
+  text-align: left;
+}
+/* ------------------------weui统一样式 end------------------------ */
 </style>
 
