@@ -7,7 +7,7 @@
       </cell>
     </group>
 
-	  <div class="version_div">
+	  <div class="version_div bg-gray">
 		  <span class="welcome_tip">亲，欢迎光临XMShop!</span>
 		  <span class="version_tip">版本1.0.0</span>
 	  </div>
@@ -178,7 +178,6 @@ export default {
 
 .version_div{
 	height: 1rem;
-	background: gray;
 	font-size: .5rem;
 	color: white;
 	text-align: left;

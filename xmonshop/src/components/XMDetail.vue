@@ -43,8 +43,8 @@
 
 			<div class="ft_bar">
 				<div class="tool_bar">
-					<div class="flex_tab_btn"><span class="home_icon"></span><span @click="backToShop">首页</span></div>
-					<div class="flex_tab_btn cart_div" @click="showCartsPage"><span class="cart_icon"></span><span>购物车</span><span class="cart_badge" v-if="cartList.length > 0">{{cartList.length>99?'99+':cartList.length}}</span></div>
+					<div class="flex_tab_btn"><span class="home_icon"></span><span class="c-gray" @click="backToShop">首页</span></div>
+					<div class="flex_tab_btn cart_div" @click="showCartsPage"><span class="cart_icon"></span><span class="c-gray">购物车</span><span class="cart_badge" v-if="cartList.length > 0">{{cartList.length>99?'99+':cartList.length}}</span></div>
 					<div class="flex_btn bg-gray" @click="showComnoPopup(false)">加入购物车</div>
 					<div class="flex_btn bg-darkgray" @click="showComnoPopup(true)">立即购买</div>
 				</div>

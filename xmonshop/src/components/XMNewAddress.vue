@@ -9,7 +9,7 @@
 
         <div class="ft_bar">
             <div class="tool_bar">
-               <div class="new_btn bg-darkgray" @click="addNewAddress">保存</div>
+               <div class="new_btn bg-gray c-white" @click="addNewAddress">保存</div>
             </div>
         </div>
 

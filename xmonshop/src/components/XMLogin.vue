@@ -385,6 +385,10 @@ export default {
   padding: .7rem;
   margin-top: 3rem;
 }
+
+form p{
+  margin: .5rem auto;
+}
 form input {
   border: solid 1px gray;
 }

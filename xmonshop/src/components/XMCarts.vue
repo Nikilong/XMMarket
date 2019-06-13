@@ -29,10 +29,10 @@
 
         <div class="ft_bar">
             <div class="tool_bar">
-                <div class="flex_tab_btn" @click="selectOrUnselectAll"><span class="check_box_empty" :class="{'check_box_select':selectProIndexs.length===cartsData.length&&cartsData.length>0}"></span><span>全选</span></div>
+                <div class="flex_tab_btn" @click="selectOrUnselectAll"><span class="check_box_empty" :class="{'check_box_select':selectProIndexs.length===cartsData.length&&cartsData.length>0}"></span><span class="c-gray">全选</span></div>
                 <!-- <div class="flex_tab_btn" @click="calltoBack"><span class="back_icon"></span><span>返回</span></div> -->
                 <div class="flex_btn" style="color: black;"><span v-if="selectProIndexs.length > 0">合计:<span class="c_red total_price_lab">￥{{totalPrice}}</span></span></div>
-                <div class="flex_btn" :class="{'c_dartGray':selectProIndexs.length>0,'c_lightGray':selectProIndexs.length===0}">结算<span v-if="selectProIndexs.length > 0">({{selectProIndexs.length}})</span></div>
+                <div class="flex_btn" :class="{'bg-darkgray':selectProIndexs.length>0,'bg-lightgray':selectProIndexs.length===0}">结算<span v-if="selectProIndexs.length > 0">({{selectProIndexs.length}})</span></div>
             </div>
         </div>
         
@@ -170,15 +170,6 @@ export default {
     position: relative;
     padding: 0.5rem;
     background: white;
-}
-.c_red{
-    color: red;
-}
-.c_lightGray{
-    background: #eeeeee;
-}
-.c_dartGray{
-    background: darkgray;
 }
 .cars_container{
     margin-bottom: 5.5rem;

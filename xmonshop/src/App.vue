@@ -6,15 +6,18 @@
       <div class="tool_bar">
           <tabbar @on-index-change="tabbarDidClick">
             <tabbar-item :selected="activeTab===0" :show-dot="true" link="/home">
-              <img slot="icon" src="./assets/icons/home_icon.svg">
+              <img slot="icon" v-if="activeTab===0" src="./assets/tabbar/tabbar_home_se.svg">
+              <img slot="icon" v-if="activeTab!=0" src="./assets/tabbar/tabbar_home.svg">
               <span slot="label">首页</span>
             </tabbar-item>
             <tabbar-item :selected="activeTab===1"  :badge="cartsCount" link="/carts">
-              <img slot="icon" src="./assets/icons/cart_icon.svg">
+              <img slot="icon" v-if="activeTab===1" src="./assets/tabbar/tabbar_cart_se.svg">
+              <img slot="icon" v-if="activeTab!=1" src="./assets/tabbar/tabbar_cart.svg">
               <span slot="label">购物车</span>
             </tabbar-item>
             <tabbar-item :selected="activeTab===2" link="/setting">
-              <img slot="icon" src="./assets/icons/my_icon.svg">
+              <img slot="icon" v-if="activeTab===2" src="./assets/tabbar/tabbar_my_se.svg">
+              <img slot="icon" v-if="activeTab!=2" src="./assets/tabbar/tabbar_my.svg">
               <span slot="label">设置</span>
             </tabbar-item>
           </tabbar>
@@ -112,6 +115,10 @@ export default {
 body,#app{
   margin: 0;
   padding: 0;
+  width:100%;
+  height:100%;
+  overflow-x:hidden;
+  overflow-y: scroll;
 }
 p{
   margin-block-start: 0;
@@ -139,6 +146,13 @@ a{
 /* todo:去掉#pp */
 .vux-cell-bd,.vux-cell-primary p{
   text-align: left;
+}
+.weui-dialog__btn_primary{
+  color:#4D3126;
+}
+
+.vux-popup-header-right {
+  color:#4D3126 !important;
 }
 /* ------------------------weui统一样式 end------------------------ */
 </style>

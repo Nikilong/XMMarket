@@ -8,7 +8,7 @@
 
         <div class="ft_bar">
             <div class="tool_bar">
-               <div class="new_btn bg-darkgray" @click="addNewAddress">添加新地址</div>
+               <div class="new_btn bg-gray c-white" @click="addNewAddress">添加新地址</div>
             </div>
         </div>
     </div>

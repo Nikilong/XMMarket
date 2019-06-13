@@ -1,6 +1,10 @@
 /* color------start */
 
-.c_yellow {
+.c-white {
+    color: white;
+}
+
+.c-yellow {
     color: yellow;
 }
 
@@ -8,12 +12,24 @@
     color: red;
 }
 
+.c-gray {
+    color: #8a8a8a;
+}
+
+.c-darkgray {
+    color: #707070;
+}
+
+.bg-lightgray {
+    background: #bfbfbf;
+}
+
 .bg-gray {
-    background: gray;
+    background: #8a8a8a;
 }
 
 .bg-darkgray {
-    background: darkgray;
+    background: #707070;
 }
 
 
@@ -33,12 +49,12 @@
 }
 
 .home_icon {
-    background: url("../assets/icons/home_icon.svg");
+    background: url("../assets/tabbar/tabbar_home.svg");
     background-size: cover;
 }
 
 .cart_icon {
-    background: url("../assets/icons/cart_icon.svg");
+    background: url("../assets/tabbar/tabbar_cart.svg");
     background-size: cover;
 }
 
@@ -239,5 +255,28 @@
     align-items: center;
 }
 
+.tool_bar:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: solid 1px gray;
+    transform: scaleY(0.5);
+    -webkit-transform: scaleY(0.5);
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+}
 
-/* ft------end */
+.tool_bar:after {
+    content: " ";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-bottom: solid 1px gray;
+    transform: scaleY(0.5);
+    -webkit-transform: scaleY(0.5);
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+}
