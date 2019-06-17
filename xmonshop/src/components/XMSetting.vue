@@ -15,19 +15,19 @@
         <cell title="我的订单"  is-link>查看全部订单</cell>
 		<grid :show-lr-borders="false" :show-vertical-dividers="false">
 			<grid-item link="/component/cell" label="待付款">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-daifukuan.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="待发货">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-daifahuo.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="待收货">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-daishouhuo.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="待评价">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-daipinjia.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="退货/退款">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-shouhou.svg">
 			</grid-item>
 		</grid>
       </group>   
@@ -36,30 +36,30 @@
         <cell title="我的服务"></cell>
 		<grid :show-lr-borders="false" :show-vertical-dividers="false">
 			<grid-item link="/component/cell" label="优惠券">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-ser-yhj.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="收藏">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-ser-sc.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="到货提醒">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-ser-dhtx.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="地址">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-ser-dz.svg">
 			</grid-item>
 		</grid>
 		<grid :show-lr-borders="false" :show-vertical-dividers="false">
 			<grid-item link="/component/cell" label="品牌日志">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-ser-pprz.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="客服信息">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-ser-kf.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="系统反馈">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-ser-xtfk.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="服务条款">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-ser-fwtk.svg">
 			</grid-item>
 		</grid>
       </group>   
@@ -68,16 +68,16 @@
         <cell title="商家功能"></cell>
 		<grid :show-lr-borders="false" :show-vertical-dividers="false">
 			<grid-item link="/component/cell" label="增加商品">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-shop-add.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="修改商品">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-shop-edit.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="处理退款">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-shop-th.svg">
 			</grid-item>
 			<grid-item link="/component/cell" label="查看订单">
-				<img slot="icon" src="../assets/icons/home_icon.svg">
+				<img slot="icon" src="../assets/setting/setting-shop-dk.svg">
 			</grid-item>
 		</grid>
       </group>   
@@ -163,7 +163,6 @@ export default {
 </script>
 
 <style  scoped>
-@import '../common/commonStyle';
 .container{
 	margin-bottom: 3rem;
 }
