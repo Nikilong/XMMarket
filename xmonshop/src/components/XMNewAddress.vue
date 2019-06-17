@@ -112,7 +112,6 @@ export default {
 </script>
 
 <style scoped>
-@import '../common/commonStyle';
 
 .container{
 }

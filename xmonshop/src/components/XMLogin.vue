@@ -379,8 +379,6 @@ export default {
 
 
 <style scoped>
-@import '../common/commonStyle';
-
 .container{
   padding: .7rem;
   margin-top: 3rem;

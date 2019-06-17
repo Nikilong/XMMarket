@@ -281,7 +281,6 @@ export default {
 </script>
 
 <style scoped>
-@import '../common/commonStyle';
 .container{
 	margin-top: 1rem;
 	margin-bottom: 4rem;
