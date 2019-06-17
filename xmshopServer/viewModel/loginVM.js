@@ -47,7 +47,13 @@ let validToken = function(data) {
             resolve(resData);
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 // 检查用户是否存在
@@ -71,7 +77,13 @@ let checkAccount = function(data) {
             resolve(resData);
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 // 登录验证
@@ -120,7 +132,13 @@ let login = function(data) {
             resolve(resData);
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 // 修改密码
@@ -173,7 +191,13 @@ let changePassword = function(data) {
             resolve(resData);
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 // 注册新账号
@@ -216,7 +240,13 @@ let creatAccount = function(data) {
             }
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 module.exports = {

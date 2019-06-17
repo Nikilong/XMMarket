@@ -38,7 +38,13 @@ let queryAddress = function(data) {
             resolve(resData);
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 // 增加地址
@@ -62,7 +68,13 @@ let addNewAddress = function(data) {
             })
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 // 修改地址
@@ -86,7 +98,13 @@ let saveAddress = function(data) {
             })
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 module.exports = {

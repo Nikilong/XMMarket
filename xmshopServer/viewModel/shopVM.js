@@ -56,7 +56,13 @@ let queryProductions = function(data) {
             }
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 // 查询商品详情
@@ -66,16 +72,17 @@ let getProductionById = function(data) {
     return new Promise((resolve, reject) => {
         let sqlStr = `select * from shop where itemId=${params.id}`
         db.query(sqlStr, [], function(result) {
-                console.log("查询结果:" + result.length)
-                resData.status = 'success'
-                resData.RESULT = result
-                resolve(resData)
-            })
-            // }).catch((err) => {
-            //     console.log(err)
-            //     resData.status = "failed"
-            //     resData.msg = err
-            //     return resData
+            console.log("查询结果:" + result.length)
+            resData.status = 'success'
+            resData.RESULT = result
+            resolve(resData)
+        })
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
     })
 
 }
@@ -92,6 +99,12 @@ let deleteProductionById = function(data) {
             resData.RESULT = result
             resolve(resData)
         })
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
     })
 
 }
@@ -110,7 +123,13 @@ let queryCart = function(data) {
             resolve(resData)
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 // 加入购物车
@@ -157,7 +176,13 @@ let addToCart = function(data) {
             }
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 // 删除购物车的货品
@@ -181,7 +206,13 @@ let deleteProduction = function(data) {
             });
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 module.exports = {

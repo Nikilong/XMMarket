@@ -37,7 +37,13 @@ let queryOrder = function(data) {
             resolve(resData);
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 // 生成订单
@@ -59,7 +65,13 @@ let creatOrder = function(data) {
             resolve(resData);
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 
 // 修改地址
@@ -86,7 +98,13 @@ let saveAddress = function(data) {
             })
         });
 
-    });
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
 }
 module.exports = {
     orderServer: fn_orderServer,
