@@ -53,7 +53,7 @@ export default {
     return {
       showTabbar:true,
       activeTab:0,   // 当前选中的tab
-      cartsCount:"0",  // 购物车数量
+      cartsCount:"",  // 购物车数量
     };
   },
   created: function() {
@@ -64,6 +64,38 @@ export default {
     window.removeEventListener("message",this.handleMessage,false)
   },
   methods:{
+    avalidToken:function(callback,failedCallback) //检查token是否有效
+    {
+      let userId = commonUtil.getCookie("_userId")
+      let token = commonUtil.getCookie("_accesstoken")
+
+      let result = {}
+      if(userId.trim().length > 0 && token.trim().length > 0){
+        let data = {
+          HEADER: {},
+          PARAMS: {userId:userId,accesstoken:token},
+          SERVICE: "LoginService.validToken"
+        }
+        let _this = this;
+        this.$axios({
+          url: commonUtil.serverUri(),
+          method: "post",
+          data: data
+        })
+        .then(function(response){
+            console.log(response.data)
+            if (response.data.status === "success") {
+              callback && callback(response.data)
+            } else {
+              failedCallback && failedCallback(response.data)
+            }
+        })
+      }else{
+        result.status = "failed"
+        result.msg = "userId或者acctoken不存在"
+        failedCallback && failedCallback(result)
+      }
+    },
     handleMessage:function(msg){
       if(msg.data === "showHome"){
         this.showTabbar = true
@@ -87,24 +119,27 @@ export default {
     },
     updateCart:function() // 更新购物车数量
 		{
-			let data = {
-				HEADER: {},
-				PARAMS: {id:commonUtil.getCookie("_userId")},
-				SERVICE: "ShopService.queryCart"
-			};
-			let _this = this;
-			this.$axios({
-				url: commonUtil.serverUri(),
-				method: "post",
-				data: data
-			}).then(function(response) {
-				console.log(response.data);
-				if (response.data.status === "success") {
-					_this.cartsCount = String(response.data.cartList.length)
-				} else {
-					alert(response.data.msg)
-				}
-			});
+      let _this = this
+      this.avalidToken(function(resu){
+        let data = {
+          HEADER: {},
+          PARAMS: {id:commonUtil.getCookie("_userId")},
+          SERVICE: "ShopService.queryCart"
+        };
+        _this.$axios({
+          url: commonUtil.serverUri(),
+          method: "post",
+          data: data
+        }).then(function(response) {
+          console.log(response.data);
+          if (response.data.status === "success") {
+            _this.cartsCount = String(response.data.cartList.length)
+          } else {
+            _this.cartsCount = ""
+          }
+        });
+
+      })
 		},
   }
 };
