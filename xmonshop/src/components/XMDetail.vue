@@ -346,7 +346,6 @@ export default {
 </script>
 
 <style scoped>
-@import '../common/commonStyle';
 .container,p,div{
 	margin: 0;
 	padding: 0;

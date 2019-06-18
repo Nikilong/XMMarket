@@ -63,12 +63,10 @@ export default {
 
         },
         editAddress(index){
-            console.log("----")
             let params = this.addsData[index]
             this.$router.replace({name:"XMNewAddress",params:params})
         },
         selectAddress(index){
-            console.log("++++++")
             let params = this.addsData[index]
             this.$router.replace({name:"XMOrder",params:params})
         },
@@ -80,8 +78,6 @@ export default {
 </script>
 
 <style scoped>
-@import '../common/commonStyle';
-
 .container{
     margin-bottom: 3rem;
 }
