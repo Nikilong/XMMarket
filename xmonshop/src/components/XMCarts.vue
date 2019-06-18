@@ -26,6 +26,10 @@
             <img class="empty_tips_img" src="../assets/icons/empty_cart_icon.svg">
             <div class="empty_tips_lab">你的购物车君空空的</div>
         </div>
+        <div v-if="showLoginTips" class="empty_tips">
+            <img class="empty_tips_img" src="../assets/icons/empty_cart_icon.svg">
+            <div class="empty_tips_lab">请先登录,<button @click="toLogin">登录</button></div>
+        </div>
 
         <div class="ft_bar">
             <div class="tool_bar">
@@ -68,29 +72,66 @@ export default {
             selectProData:[],  // 勾选商品数据
             hideCarts:false,  // 隐藏购物车
             showEmptyCartMsg:false, // 空的购物车的占位符
+            showLoginTips:false,  // 是否需要登录
         }
     },
     methods:{
-        queryCarts:function(){
-            let data = {
-					HEADER: {},
-					PARAMS: {id:commonUtil.getCookie("_userId")},
-					SERVICE: "ShopService.queryCart"
-				};
-			let _this = this;
-			this.$axios({
-                url: commonUtil.serverUri(),
-                method: "post",
-                data: data
-            }).then(function(response) {
-                console.log(response.data);
-                if (response.data.status === "success") {
-                    _this.cartsData = Array.from(response.data.cartList)
-                    _this.showEmptyCartMsg = response.data.cartList.length>0 ? false :true
-                } else {
-                    alert(response.data.msg)
+        avalidToken:function(callback,failedCallback) //检查token是否有效
+        {
+            let userId = commonUtil.getCookie("_userId")
+            let token = commonUtil.getCookie("_accesstoken")
+
+            let result = {}
+            if(userId.trim().length > 0 && token.trim().length > 0){
+                let data = {
+                    HEADER: {},
+                    PARAMS: {userId:userId,accesstoken:token},
+                    SERVICE: "LoginService.validToken"
                 }
-            });
+                let _this = this;
+                this.$axios({
+                    url: commonUtil.serverUri(),
+                    method: "post",
+                    data: data
+                })
+                .then(function(response){
+                        console.log(response.data)
+                        if (response.data.status === "success") {
+                            callback && callback(response.data)
+                        } else {
+                            failedCallback && failedCallback(response.data)
+                        }
+                })
+            }else{
+                result.status = "failed"
+                result.msg = "userId或者acctoken不存在"
+                failedCallback && failedCallback(result)
+            }
+        },
+        queryCarts:function(){
+            let _this = this
+            this.avalidToken(function(result){
+                let data = {
+                        HEADER: {},
+                        PARAMS: {id:commonUtil.getCookie("_userId")},
+                        SERVICE: "ShopService.queryCart"
+                    };
+                _this.$axios({
+                    url: commonUtil.serverUri(),
+                    method: "post",
+                    data: data
+                }).then(function(response) {
+                    console.log(response.data);
+                    if (response.data.status === "success") {
+                        _this.cartsData = Array.from(response.data.cartList)
+                        _this.showEmptyCartMsg = response.data.cartList.length>0 ? false :true
+                    } else {
+                        alert(response.data.msg)
+                    }
+                });
+            },function(err){
+                _this.showLoginTips = true
+            })
         },
         selectOrUnselectAll:function(){
             // console.log(this.selectProIndexs.length +"----"+ this.cartsData.length)
@@ -153,6 +194,9 @@ export default {
                 }
 			});
         },
+        toLogin:function(){
+            this.$router.push({name:"XMLogin",query:{type:"3"}})
+        },
     },
     created:function(){
         window.postMessage("showCarts","*")
@@ -163,8 +207,6 @@ export default {
 
 
 <style scoped>
-@import '../common/commonStyle';
-
 /* ====================== */
 .container{
     position: relative;

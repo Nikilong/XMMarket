@@ -181,6 +181,8 @@ export default {
                   _this.$router.push({path:"/detail",query:{itemId:itemId}})
                 }else if(itemId && type==="2"){
                   _this.$router.push("/addressList")
+                }else if(type==="3"){
+                  _this.$router.push({name:"XMCarts"})
                 }else{
                   _this.$router.push("home")
                 }
