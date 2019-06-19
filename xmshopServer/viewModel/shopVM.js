@@ -37,7 +37,7 @@ let queryProductions = function(data) {
             resData.totalNum = result.length;
             if (result.length > 0) {
                 let startNum = params.num * params.pageNum
-                let sqlStrPage = `select * from shop limit ${startNum},${params.num}`; // limit 0,10
+                let sqlStrPage = `SELECT * FROM shop ORDER BY lastModify DESC LIMIT ${startNum},${params.num}`; // limit 0,10,按修改时间顺序排(最近修改的排在最上面)
                 db.query(sqlStrPage, [], function(pageResult, fields) {
                     console.log('查询结果：%s', pageResult.length);
                     if (pageResult.length > 0) {
@@ -215,6 +215,29 @@ let deleteProduction = function(data) {
     })
 }
 
+// 更新购物车货品的数量
+let updateProductionNum = function(data) {
+    let params = data.PARAMS;
+    return new Promise((resolve, reject) => {
+        let checkSql = `UPDATE cart SET num=${params.num} where id=${params.id}`
+        db.query(checkSql, [], function(result, fields) {
+            console.log('更新商品数量');
+            // 返回最新的数据
+            let resData = {}
+            resData.status = 'success';
+            resData.msg = '购物车已更新该商品数量为' + params.num;
+            resolve(resData);
+        });
+
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
+}
+
 module.exports = {
     shopServer: fn_shopServer,
 }
@@ -222,6 +245,8 @@ module.exports = {
 // queryProductions({ PARAMS: { num: 10, pageNum: 0 } });
 // queryCart({ PARAMS: { userId: 2 } });
 // getProductionById({ PARAMS: { id: "527106977940" } })
+// updateProductionNum({ PARAMS: { id: 72, num: 13} })
+
 // addToCart({
 //     PARAMS: {
 //         itemId: 6197407362,
