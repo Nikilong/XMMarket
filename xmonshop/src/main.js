@@ -29,14 +29,14 @@ Vue.use(VueRouter)
 
 //定义配置路由
 const routes = [
-    { path: '/login', name: "XMLogin", component: XMLogin },
-    { path: '/home', name: "XMHome", component: XMHome },
-    { path: '/detail', name: "XMDetail", component: XMDetail },
-    { path: '/carts', name: "XMCarts", component: XMCarts },
-    { path: '/order', name: "XMOrder", component: XMOrder },
-    { path: '/setting', name: "XMSetting", component: XMSetting },
-    { path: '/addressList', name: "XMAddressList", component: XMAddressList },
-    { path: '/newAddress', name: "XMNewAddress", component: XMNewAddress },
+    { path: '/login', name: "XMLogin", component: XMLogin, meta: { title: "登录" } },
+    { path: '/home', name: "XMHome", component: XMHome, meta: { title: "XMMarket掌上旗舰店" } },
+    { path: '/detail', name: "XMDetail", component: XMDetail, meta: { title: "详情" } },
+    { path: '/carts', name: "XMCarts", component: XMCarts, meta: { title: "购物车" } },
+    { path: '/order', name: "XMOrder", component: XMOrder, meta: { title: "填写订单" } },
+    { path: '/setting', name: "XMSetting", component: XMSetting, meta: { title: "设置" } },
+    { path: '/addressList', name: "XMAddressList", component: XMAddressList, meta: { title: "地址本" } },
+    { path: '/newAddress', name: "XMNewAddress", component: XMNewAddress, meta: { title: "新建地址" } },
     { path: '*', redirect: '/home' },
 ]
 
@@ -44,6 +44,13 @@ const routes = [
 const router = new VueRouter({
     mode: 'history', // 清除uri的*
     routes: routes
+})
+router.beforeEach((to, from, next) => {
+    /* 路由发生变化修改页面title */
+    if (to.meta.title) {
+        document.title = to.meta.title;
+    }
+    next();
 })
 
 /*---------------VueRouter-end----------------*/
