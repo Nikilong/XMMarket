@@ -5,7 +5,7 @@
     <div class="ft_bar" v-if="showTabbar">
       <div class="tool_bar">
           <tabbar @on-index-change="tabbarDidClick">
-            <tabbar-item :selected="activeTab===0" :show-dot="false" link="/home">
+            <tabbar-item :selected="activeTab===0" :show-dot="showProDot" link="/home">
               <img slot="icon" v-if="activeTab===0" src="./assets/tabbar/tabbar_home_se.svg">
               <img slot="icon" v-if="activeTab!=0" src="./assets/tabbar/tabbar_home.svg">
               <span slot="label">首页</span>
@@ -42,6 +42,7 @@ export default {
       showTabbar:true,
       activeTab:0,   // 当前选中的tab
       cartsCount:"",  // 购物车数量
+      showProDot:false,  // 商品是否有更新
     };
   },
   created: function() {
@@ -100,6 +101,8 @@ export default {
         this.updateCart()
       }else if(msg.data === "hideTabbar"){
         this.showTabbar = false
+      }else if(msg.data === "productionsHaveModify"){
+        this.showProDot = true
       }else{
           try{
             if(msg.data.indexOf("updataCartsCount--")>-1){

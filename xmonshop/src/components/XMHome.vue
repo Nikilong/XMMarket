@@ -32,7 +32,7 @@
 
 		</div>
 		<div><load-more v-if="loadingMore.loading.status" :tip="loadingMore.loading.value"></load-more></div>
-		<div><load-more v-if="!loadingMore.loading.status" :show-loading="false" :tip="loadingMore.noMore.value" background-color="#fbf9fe"></load-more></div>
+		<div><load-more v-if="loadingMore.noMore.status" :show-loading="false" :tip="loadingMore.noMore.value" background-color="#fbf9fe"></load-more></div>
 	</div>
   </div>
 </template>
@@ -148,6 +148,18 @@ export default {
 				}else{
 					_this.shopList = _this.shopList.concat(response.data.list)
 				}
+				
+				// 比对时间看商品是否有更新
+				if(_this.shopList.length > 0){
+					let lastModify = commonUtil.getCookie("_lastProModify")
+					let newModify = _this.shopList[0].lastModify
+						console.log(lastModify,newModify)
+					if(lastModify != newModify){
+						console.log("有更新!!!!!")
+						commonUtil.setCookie("_lastProModify",newModify)
+						window.postMessage("productionsHaveModify","*")
+					}
+				}
 				// 没有更多数据
 				if(_this.shopList.length === response.data.totalNum){
 						_this.loadingMore.loading.status = false;
@@ -209,8 +221,6 @@ export default {
 	},
 	//删除
 	deleteItem(e) {
-		console.log(e)
-		console.log("刪除")
 		// 当前索引
 		let index = e.currentTarget.dataset.index;
 		// 复位
@@ -243,7 +253,7 @@ export default {
 		window.requestAnimationFrame(function()
 		{
 			let bottomDis = document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight;
-			if(bottomDis < 60 && _this.loadingMore.show === false){
+			if(bottomDis < 100 && _this.loadingMore.show === false){
 				console.log("---")
 				_this.loadingMore.show = true;
 				_this.loadingMore.loading.status = true;
