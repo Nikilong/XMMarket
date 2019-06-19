@@ -300,6 +300,7 @@ export default {
 				console.log(response.data)
 				if (response.data.status === "success") {
 					_this.cartList = Array.from(response.data.cartList);
+					window.postMessage("updataCartsCount--"+_this.cartList.length,"*")
 				} else {
 					alert(response.data.msg)
 				}

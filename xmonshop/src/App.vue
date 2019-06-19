@@ -5,7 +5,7 @@
     <div class="ft_bar" v-if="showTabbar">
       <div class="tool_bar">
           <tabbar @on-index-change="tabbarDidClick">
-            <tabbar-item :selected="activeTab===0" :show-dot="true" link="/home">
+            <tabbar-item :selected="activeTab===0" :show-dot="false" link="/home">
               <img slot="icon" v-if="activeTab===0" src="./assets/tabbar/tabbar_home_se.svg">
               <img slot="icon" v-if="activeTab!=0" src="./assets/tabbar/tabbar_home.svg">
               <span slot="label">首页</span>
@@ -23,18 +23,10 @@
           </tabbar>
       </div>
     </div>
-    <!-- <xmlogin userName="Tom" v-show="showLogin" @loginEvent="loginListen"></xmlogin> -->
-    <!-- <xmhome v-show="showShop"  @logoutEvent="logoutListen" @openDetail="openProductionDetail" :userName="loginUserName"></xmhome> -->
-    <!-- <xmhomeTaobao v-show="showShop"  @logoutEvent="logoutListen"></xmhomeTaobao> -->
-    <!-- <xmdetail v-show="showDetail" ref="detailPage" :itemData="currentProData" @backToShop="backToShopList"></xmdetail> -->
   </div>
 </template>
 
 <script>
-// import xmlogin from "./components/XMLogin"
-// import xmhome from "./components/XMHome"
-// import xmhomeTaobao from "./components/XMHomeTaobao"
-// import xmdetail from "./components/XMDetail"
 import commonUtil from './common/common'
 
 
@@ -43,10 +35,6 @@ import {Tabbar, TabbarItem} from "vux";
 export default {
   name: "App",
   components: {
-    // xmlogin,
-    // xmhome,
-    // xmhomeTaobao,
-    // xmdetail,
     Tabbar, TabbarItem
   },
   data() {
@@ -97,6 +85,7 @@ export default {
       }
     },
     handleMessage:function(msg){
+     
       if(msg.data === "showHome"){
         this.showTabbar = true
         this.activeTab = 0
@@ -111,6 +100,16 @@ export default {
         this.updateCart()
       }else if(msg.data === "hideTabbar"){
         this.showTabbar = false
+      }else{
+          try{
+            if(msg.data.indexOf("updataCartsCount--")>-1){
+              let count = String(msg.data).replace("updataCartsCount--","")
+              if(count === "0") count = ""
+              this.cartsCount = count
+            }
+          }catch(e){
+          // console.log(e)
+          }
       }
 
     },
@@ -133,12 +132,14 @@ export default {
         }).then(function(response) {
           console.log(response.data);
           if (response.data.status === "success") {
-            _this.cartsCount = String(response.data.cartList.length)
+            _this.cartsCount = response.data.cartList.length>0 ? String(response.data.cartList.length) : ""
           } else {
             _this.cartsCount = ""
           }
         });
 
+      },function(err){
+        _this.cartsCount = ""
       })
 		},
   }
