@@ -244,15 +244,17 @@
 .ft_bar {
     position: fixed;
     bottom: 0;
-    /* height: 2.2rem; */
-    width: 100%;
+    left: 0;
+    right: 0;
     background: white;
 }
 
 .tool_bar {
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 .tool_bar:before {

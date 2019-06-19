@@ -4,7 +4,7 @@
         <div class="cars_container">
             <div class="pro_cell" v-if="cartsData.length>0" v-for="item,daIndex in cartsData">
                 <div class="pro_cell_checkbox">
-                    <div @click="changeCheckbox(daIndex,item.itemId,item.num)" class="check_box_empty" :class="{'check_box_select':selectProIndexs.indexOf(daIndex) >= 0}"></div>
+                    <div @click="changeCheckbox(item.id)" class="check_box_empty" :class="{'check_box_select':selectProIds.indexOf(item.id) >-1}"></div>
                 </div>
                 <div class="pro_cell_img">
                     <img class="pro_img" :src="item.pic">
@@ -14,11 +14,11 @@
                     <p class="pro_cell_type">{{item.type}}</p>
                     <p class="pro_cell_price c_red">￥{{item.price}}</p>
                     <div style="position: relative;">
-                        <x-number style="position: absolute;right:-2rem;bottom:-.5rem;transform:scale(0.7);" align="right"  button-style="square" :min="1" :max="99" v-model="item.num"></x-number>
+                        <x-number @on-change="changeProNum(daIndex)" style="position: absolute;right:-2rem;bottom:-.5rem;transform:scale(0.7);" align="right"  button-style="square" :min="1" :max="99" v-model="item.num"></x-number>
                     </div>
                 </div>
                 <div class="pro_cell_checkbox">
-                    <div @click="deleteProAtIndex(daIndex)" class="pro_cell_del_btn"></div>
+                    <div @click.prevent="deleteProAtIndex(daIndex)" class="pro_cell_del_btn"></div>
                 </div>
             </div>
         </div>
@@ -33,10 +33,10 @@
 
         <div class="ft_bar">
             <div class="tool_bar">
-                <div class="flex_tab_btn" @click="selectOrUnselectAll"><span class="check_box_empty" :class="{'check_box_select':selectProIndexs.length===cartsData.length&&cartsData.length>0}"></span><span class="c-gray">全选</span></div>
+                <div class="flex_tab_btn" @click="selectOrUnselectAll"><span class="check_box_empty" :class="{'check_box_select':selectProIds.length===cartsData.length&&cartsData.length>0}"></span><span class="c-gray">{{selectProIds.length===cartsData.length&&cartsData.length>0?"反选":"全选"}}</span></div>
                 <!-- <div class="flex_tab_btn" @click="calltoBack"><span class="back_icon"></span><span>返回</span></div> -->
-                <div class="flex_btn" style="color: black;"><span v-if="selectProIndexs.length > 0">合计:<span class="c_red total_price_lab">￥{{totalPrice}}</span></span></div>
-                <div class="flex_btn" :class="{'bg-darkgray':selectProIndexs.length>0,'bg-lightgray':selectProIndexs.length===0}">结算<span v-if="selectProIndexs.length > 0">({{selectProIndexs.length}})</span></div>
+                <div class="flex_btn" style="color: black;"><span v-if="selectProIds.length > 0">合计:<span class="c_red total_price_lab">￥{{totalPrice}}</span></span></div>
+                <div class="flex_btn" :class="{'bg-darkgray':selectProIds.length>0,'bg-lightgray':selectProIds.length===0}">结算<span v-if="selectProIds.length > 0">({{selectProIds.length}})</span></div>
             </div>
         </div>
         
@@ -57,9 +57,14 @@ export default {
     computed:{
         totalPrice:function(){ // 总价
             let totalP = 0;
-            for(let i=0;i<this.selectProIndexs.length;i++){
-                let ele = this.cartsData[this.selectProIndexs[i]]
-                totalP += ele.num * ele.price
+            for(let i=0;i<this.selectProIds.length;i++){
+                for(let j=0;j<this.cartsData.length;j++){
+                    let ele = this.cartsData[j]
+                    if(ele.id === this.selectProIds[i]){
+                        totalP += ele.num * ele.price
+                        break
+                    }
+                }
             }
             return totalP;
         }
@@ -68,8 +73,7 @@ export default {
     data(){
         return {
             cartsData:[], // 商品数据
-            selectProIndexs:[],  // 勾选商品id
-            selectProData:[],  // 勾选商品数据
+            selectProIds:[],  // 勾选商品id
             hideCarts:false,  // 隐藏购物车
             showEmptyCartMsg:false, // 空的购物车的占位符
             showLoginTips:false,  // 是否需要登录
@@ -95,12 +99,12 @@ export default {
                     data: data
                 })
                 .then(function(response){
-                        console.log(response.data)
-                        if (response.data.status === "success") {
-                            callback && callback(response.data)
-                        } else {
-                            failedCallback && failedCallback(response.data)
-                        }
+                    console.log(response.data)
+                    if (response.data.status === "success") {
+                        callback && callback(response.data)
+                    } else {
+                        failedCallback && failedCallback(response.data)
+                    }
                 })
             }else{
                 result.status = "failed"
@@ -125,6 +129,8 @@ export default {
                     if (response.data.status === "success") {
                         _this.cartsData = Array.from(response.data.cartList)
                         _this.showEmptyCartMsg = response.data.cartList.length>0 ? false :true
+                        document.title = response.data.cartList.length>0 ? ("购物车("+response.data.cartList.length+")"):"购物车"
+                        window.postMessage("updataCartsCount--"+_this.cartsData.length,"*")
                     } else {
                         alert(response.data.msg)
                     }
@@ -134,29 +140,21 @@ export default {
             })
         },
         selectOrUnselectAll:function(){
-            // console.log(this.selectProIndexs.length +"----"+ this.cartsData.length)
-            if(this.selectProIndexs.length === this.cartsData.length){
-                this.selectProIndexs = []
-                this.selectProData = []
+            if(this.selectProIds.length === this.cartsData.length){
+                this.selectProIds = []
             }else{
-                this.selectProIndexs = []
+                this.selectProIds = []
                 for(let i=0;i<this.cartsData.length;i++){
-                    this.selectProIndexs.push(i)
-                    let ele = this.cartsData[i]
-                    this.selectProData.push({id:ele.itemId,num:ele.num})
+                    this.selectProIds.push(this.cartsData[i].id)
                 }
             }
-           
         },
-        changeCheckbox:function(daIndex,id,num){
-            let index = this.selectProIndexs.indexOf(daIndex)
+        changeCheckbox:function(id){
+            let index = this.selectProIds.indexOf(id)
             if(index >= 0){
-                this.selectProIndexs.splice(index,1)
-                this.selectProData.splice(index,1)
+                this.selectProIds.splice(index,1)
             }else{
-                let ele = {id:id,num:num}
-                this.selectProIndexs.push(daIndex)
-                this.selectProData.push(ele)
+                this.selectProIds.push(id)
             }
 
         },
@@ -172,13 +170,12 @@ export default {
         },
         deleteProAtIndex:function(index){
             let item = this.cartsData[index]
-            console.log(item)
             let data = {
                 HEADER: {},
                 PARAMS: item,
                 SERVICE: "ShopService.deleteProduction"
             }
-			let _this = this;
+            let _this = this;
 			this.$axios(
             {
                 url: commonUtil.serverUri(),
@@ -189,10 +186,37 @@ export default {
                 console.log(response.data)
                 if (response.data.status === "success") {
                     _this.cartsData = Array.from(response.data.cartList);
+                    _this.changeCheckbox(item.id)
+                    window.postMessage("updataCartsCount--"+_this.cartsData.length,"*")
                 } else {
                     alert(response.data.msg)
                 }
 			});
+        },
+        changeProNum:function (index){  // 商品数量改变事件
+            let item = this.cartsData[index]
+            this.saveProNum(item)
+        },
+        saveProNum:function (item){
+            let _this = this
+            this.avalidToken(function(result){
+                let data = {
+                        HEADER: {},
+                        PARAMS: {id:item.id,num:item.num},
+                        SERVICE: "ShopService.updateProductionNum"
+                    };
+                _this.$axios({
+                    url: commonUtil.serverUri(),
+                    method: "post",
+                    data: data
+                }).then(function(response) {
+                    // console.log(response.data);
+                    if (response.data.status === "success") {
+                        console.log(response.data.msg)
+                    }
+                });
+            },function(err){
+            })
         },
         toLogin:function(){
             this.$router.push({name:"XMLogin",query:{type:"3"}})
@@ -218,12 +242,25 @@ export default {
 }
 .pro_cell{
     display: flex;
+    position: relative;
     justify-content: left;
     align-items: center;
-    border-bottom: 1px solid gray;
     padding:0  0.5rem;
     
 }
+.pro_cell:after{
+    content: " ";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-bottom: solid 1px gray;
+    transform: scaleY(0.5);
+    -webkit-transform: scaleY(0.5);
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+}
+
 .pro_cell_checkbox{
     flex: 1;
 }
@@ -277,15 +314,7 @@ export default {
 }
 
 .ft_bar{
-	position: fixed;
 	bottom: 3rem;
-	width:100%;
-	background: white;
-}
-.tool_bar{
-	display: flex;
-	justify-content:center;
-	align-items: center;
 }
 
 .flex_tab_btn{
