@@ -153,9 +153,7 @@ export default {
 				if(_this.shopList.length > 0){
 					let lastModify = commonUtil.getCookie("_lastProModify")
 					let newModify = _this.shopList[0].lastModify
-						console.log(lastModify,newModify)
 					if(lastModify != newModify){
-						console.log("有更新!!!!!")
 						commonUtil.setCookie("_lastProModify",newModify)
 						window.postMessage("productionsHaveModify","*")
 					}
@@ -339,7 +337,8 @@ export default {
     -webkit-transform-origin: 0 0;
 }
  .list-item .title{
-     font-size: 0.8rem;
+	 font-size: 0.8rem;
+	 padding-right: 0.5rem;
  }
  .list-item p{
     display: -webkit-box;
