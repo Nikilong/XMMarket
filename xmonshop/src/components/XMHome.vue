@@ -402,7 +402,7 @@ export default {
 .list-item .other-info{
     position: absolute;
     bottom: 0.2rem;
-    left: 0;
+    /* left: 0; */
     right: 0.5rem;
     font-size: 0.6rem;
 		text-align: right;

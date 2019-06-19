@@ -34,7 +34,7 @@
 				</p>
 				<p>{{itemData.itemName}}</p>
 			</div>
-			<div class="detail_desc">
+			<div v-if="itemData.subTitle" class="detail_desc">
 				<p>{{itemData.subTitle}}</p>
 			</div>
 			<div class="detail_photo_div" v-if="detailImgs.length > 0" style="margin-bottom:3rem;">
@@ -386,7 +386,7 @@ export default {
 	position: relative;
 	margin: 0.5rem 0;
 	background:white;
-	height: 6rem;
+	max-height: 6rem;
 }
 
 .detail_desc p{
