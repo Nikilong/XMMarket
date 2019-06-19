@@ -229,22 +229,22 @@ export default {
 		},
 		createOrder:function(){ // 立即购买
 			commonUtil.setCookie("_shouldPushHistory","true")
-			let params = {};
+			let proList = {};
 
 			let typeStr = "";
 			for(let i=0;i<this.combo.length;i++){
 				let selectData = this.combo[i];
 				typeStr = typeStr+"-"+selectData.values[selectData.selectIndex].type
 			}
-			params.type = typeStr.substring(1);
-			params.num = this.proNum
-			params.price = this.totalPrice / this.proNum;
-			params.itemId = this.itemData.itemId
-			params.userId = commonUtil.getCookie("_userId")
+			proList.type = typeStr.substring(1);
+			proList.num = this.proNum
+			proList.price = this.totalPrice / this.proNum;
+			proList.itemId = this.itemData.itemId
+			proList.userId = commonUtil.getCookie("_userId")
 
 			let data = {
 				HEADER: {},
-				PARAMS: params,
+				PARAMS: {list:[proList]},
 				SERVICE: "OrderService.creatOrder"
 			}
 			let _this = this

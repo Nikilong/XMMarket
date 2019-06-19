@@ -36,7 +36,7 @@
                 <div class="flex_tab_btn" @click="selectOrUnselectAll"><span class="check_box_empty" :class="{'check_box_select':selectProIds.length===cartsData.length&&cartsData.length>0}"></span><span class="c-gray">{{selectProIds.length===cartsData.length&&cartsData.length>0?"反选":"全选"}}</span></div>
                 <!-- <div class="flex_tab_btn" @click="calltoBack"><span class="back_icon"></span><span>返回</span></div> -->
                 <div class="flex_btn" style="color: black;"><span v-if="selectProIds.length > 0">合计:<span class="c_red total_price_lab">￥{{totalPrice}}</span></span></div>
-                <div class="flex_btn" :class="{'bg-darkgray':selectProIds.length>0,'bg-lightgray':selectProIds.length===0}">结算<span v-if="selectProIds.length > 0">({{selectProIds.length}})</span></div>
+                <div class="flex_btn" :class="{'bg-darkgray':selectProIds.length>0,'bg-lightgray':selectProIds.length===0}"  @click="createOrder">结算<span v-if="selectProIds.length > 0">({{selectProIds.length}})</span></div>
             </div>
         </div>
         
@@ -218,6 +218,46 @@ export default {
             },function(err){
             })
         },
+        createOrder:function(){ // 结算
+            commonUtil.setCookie("_shouldPushHistory","true")
+            let proList = []
+            for(let i=0;i<this.selectProIds.length;i++){
+                for(let j=0;j<this.cartsData.length;j++){
+                    let item = this.cartsData[j]
+                    if(item.id === this.selectProIds[i]){
+                        let ele = {}
+                        ele.type = item.type
+                        ele.num = item.num
+                        ele.price = item.price
+                        ele.itemId = item.itemId
+                        ele.userId = commonUtil.getCookie("_userId")
+                        proList.push(ele)
+                        break
+                    }
+                }
+            }
+
+			let data = {
+				HEADER: {},
+				PARAMS: {list: proList},
+				SERVICE: "OrderService.creatOrder"
+            }
+			let _this = this
+			_this.$axios({
+				url: commonUtil.serverUri(),
+				method: "post",
+				data: data
+			}).then(function(response) {
+				_this.showComno = false
+				console.log(response.data)
+				if (response.data.status === "success") {
+					commonUtil.setCookie("_serials",response.data.serials)
+					_this.$router.push({name:"XMOrder",query:{serials:response.data.serials}})
+				} else {
+					alert(response.data.msg)
+				}
+			});
+		},
         toLogin:function(){
             this.$router.push({name:"XMLogin",query:{type:"3"}})
         },
