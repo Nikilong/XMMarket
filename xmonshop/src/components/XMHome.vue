@@ -31,7 +31,8 @@
 			<div class="delete_btn" @click="deleteItem" :data-index="index">删除</div>
 
 		</div>
-		<div style="text-align:center;">{{loadingMore.loading.status? loadingMore.loading.value : loadingMore.noMore.value}}</div>
+		<div><load-more v-if="loadingMore.loading.status" :tip="loadingMore.loading.value"></load-more></div>
+		<div><load-more v-if="!loadingMore.loading.status" :show-loading="false" :tip="loadingMore.noMore.value" background-color="#fbf9fe"></load-more></div>
 	</div>
   </div>
 </template>
@@ -41,14 +42,13 @@
 <script>
 
 import commonUtil from "../common/common"
-import { Loading } from "vux"
-import xmcarts from "./XMCarts"
+import { Loading,LoadMore } from "vux"
 
 
 export default {
   name: "xmhome",
   components: {
-    Loading,xmcarts
+    Loading,LoadMore
 	},
 	props:[],
   data() {
@@ -60,7 +60,7 @@ export default {
 		loadingMore:{
 			show:false,
 			loading:{
-				status:false,
+				status:true,
 				value:"正在加载中...."
 			},
 			noMore:{
@@ -243,7 +243,7 @@ export default {
 		window.requestAnimationFrame(function()
 		{
 			let bottomDis = document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight;
-			if(bottomDis < 100 && _this.loadingMore.show === false){
+			if(bottomDis < 60 && _this.loadingMore.show === false){
 				console.log("---")
 				_this.loadingMore.show = true;
 				_this.loadingMore.loading.status = true;
@@ -283,7 +283,7 @@ export default {
 <style scoped>
 .container{
 	margin-top: 1rem;
-	margin-bottom: 4rem;
+	margin-bottom: 2.4rem;
 	overflow-x: hidden;
 }
 
@@ -296,8 +296,6 @@ export default {
 }
 
 .float_icon{
-	/* opacity: 0.7; */
-	/* background: gray; */
 	border-radius: 1.5rem;
 }
 .float_icon div{

@@ -189,6 +189,9 @@ a{
 .vux-popup-header-right {
   color:#4D3126 !important;
 }
+.weui-loadmore {
+    margin:0.9rem auto !important;
+}
 /* ------------------------weui统一样式 end------------------------ */
 </style>
 
