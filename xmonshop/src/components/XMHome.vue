@@ -370,7 +370,7 @@ export default {
     background-size: cover;
 }
 .coupon-amount-tag{
-	  display: inline-block;
+	display: inline-block;
     background: url(http://gw.alicdn.com/tps/TB14Vh.OXXXXXXxXVXXXXXXXXXX-34-32.png) no-repeat;
     background-size: 17px 16px;
     height: 16px;
@@ -412,7 +412,7 @@ export default {
     /* left: 0; */
     right: 0.5rem;
     font-size: 0.6rem;
-		text-align: right;
+	text-align: right;
 }
 
 .other-info .fr{
