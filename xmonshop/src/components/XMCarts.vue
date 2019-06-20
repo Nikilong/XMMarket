@@ -319,6 +319,7 @@ export default {
                     if(response.data.delete === true){
                         _this.cartsData.splice(_this.currentIndex,1)
                         _this.selectProIds.splice(_this.selectProIds.indexOf(item.id),1)
+                        window.postMessage("updataCartsCount--"+_this.cartsData.length,"*")
                     }
 
                 } else {
