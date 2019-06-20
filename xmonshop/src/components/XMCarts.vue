@@ -1,24 +1,26 @@
 <template>
     <!-- <div class="container" :class="{'animate_pullDown':hideCarts,'animate_pullUp':!hideCarts}"> -->
     <div class="container">
+        <xmcombo ref="combo" :combo="combo" :showNum="false" @comboDidClick="selectCombo"></xmcombo>
+
         <div class="cars_container">
             <div class="pro_cell" v-if="cartsData.length>0" v-for="item,daIndex in cartsData">
                 <div class="pro_cell_checkbox">
                     <div @click="changeCheckbox(item.id)" class="check_box_empty" :class="{'check_box_select':selectProIds.indexOf(item.id) >-1}"></div>
                 </div>
-                <div class="pro_cell_img">
+                <div class="pro_cell_img" @click="openItem(item)">
                     <img class="pro_img" :src="item.pic">
                 </div>
                 <div class="pro_cell_msg">
-                    <p class="pro_cell_title">{{item.itemName}}</p>
-                    <p class="pro_cell_type">{{item.type}}</p>
-                    <p class="pro_cell_price c_red">￥{{item.price}}</p>
+                    <p class="pro_cell_title" @click="openItem(item)">{{item.itemName}}</p>
+                    <p class="pro_cell_type" @click="showComboPop(item,daIndex)">{{item.type}}</p>
+                    <p class="pro_cell_price c-red">￥{{item.price}}</p>
                     <div style="position: relative;">
                         <x-number @on-change="changeProNum(daIndex)" style="position: absolute;right:-2rem;bottom:-.5rem;transform:scale(0.7);" align="right"  button-style="square" :min="1" :max="99" v-model="item.num"></x-number>
                     </div>
                 </div>
                 <div class="pro_cell_checkbox">
-                    <div @click.prevent="deleteProAtIndex(daIndex)" class="pro_cell_del_btn"></div>
+                    <div @click="deleteProAtIndex(daIndex)" class="pro_cell_del_btn"></div>
                 </div>
             </div>
         </div>
@@ -35,7 +37,7 @@
             <div class="tool_bar">
                 <div class="flex_tab_btn" @click="selectOrUnselectAll"><span class="check_box_empty" :class="{'check_box_select':selectProIds.length===cartsData.length&&cartsData.length>0}"></span><span class="c-gray">{{selectProIds.length===cartsData.length&&cartsData.length>0?"反选":"全选"}}</span></div>
                 <!-- <div class="flex_tab_btn" @click="calltoBack"><span class="back_icon"></span><span>返回</span></div> -->
-                <div class="flex_btn" style="color: black;"><span v-if="selectProIds.length > 0">合计:<span class="c_red total_price_lab">￥{{totalPrice}}</span></span></div>
+                <div class="flex_btn" style="color: black;"><span v-if="selectProIds.length > 0">合计:<span class="c-red total_price_lab">￥{{totalPrice}}</span></span></div>
                 <div class="flex_btn" :class="{'bg-darkgray':selectProIds.length>0,'bg-lightgray':selectProIds.length===0}"  @click="createOrder">结算<span v-if="selectProIds.length > 0">({{selectProIds.length}})</span></div>
             </div>
         </div>
@@ -48,11 +50,12 @@
 import commonUtil from "../common/common";
 import {Cell,Checklist,XNumber} from "vux";
 import { setTimeout } from 'timers';
+import xmcombo from "./XMCombo"
 
 export default {
     name:'xmcarts',
     components:{
-        Checklist,Cell,XNumber
+        Checklist,Cell,XNumber,xmcombo
     },
     computed:{
         totalPrice:function(){ // 总价
@@ -77,6 +80,8 @@ export default {
             hideCarts:false,  // 隐藏购物车
             showEmptyCartMsg:false, // 空的购物车的占位符
             showLoginTips:false,  // 是否需要登录
+            combo:[], // 商品型号
+            currentIndex:-1, // 当前修改的数据的索引
         }
     },
     methods:{
@@ -257,7 +262,70 @@ export default {
 					alert(response.data.msg)
 				}
 			});
-		},
+        },
+        openItem:function(item){
+            this.$router.push({name:"XMDetail",query:{itemId:item.itemId}})
+        },
+        showComboPop:function(item,daIndex){
+            this.currentIndex = daIndex
+            // 查询商品详情
+			let data = {
+                HEADER: {},
+                PARAMS: {id:Number(item.itemId)},
+                SERVICE: "ShopService.getProductionById"
+			}
+
+			let _this = this;
+			this.$axios({
+				url: commonUtil.serverUri(),
+				method: "post",
+				data: data
+			})
+			.then(function(response){
+                console.log(response.data)
+                if (response.data.status === "success") {
+                    _this.itemData = response.data.RESULT[0];
+                    try{
+                        let jsonStr =_this.itemData.combo
+                        _this.combo = JSON.parse(jsonStr).RESULT
+                        _this.$refs.combo.show(true)
+                    }catch(e){
+                        console.log(e)
+                    }
+                } else {
+                    alert(response.data.msg)
+                }
+			})
+        },
+        selectCombo:function(typeStr,num,perPri){
+            let item = this.cartsData[this.currentIndex]
+            item.type = typeStr
+
+            // 查询商品详情
+			let data = {
+                HEADER: {},
+                PARAMS: {id:Number(item.id),userId:commonUtil.getCookie("_userId"),itemId:item.itemId,type:item.type},
+                SERVICE: "ShopService.updateProductionType"
+			}
+			let _this = this;
+			this.$axios({
+				url: commonUtil.serverUri(),
+				method: "post",
+				data: data
+			})
+			.then(function(response){
+                console.log(response.data)
+                if (response.data.status === "success") {
+                    if(response.data.delete === true){
+                        _this.cartsData.splice(_this.currentIndex,1)
+                        _this.selectProIds.splice(_this.selectProIds.indexOf(item.id),1)
+                    }
+
+                } else {
+                    alert(response.data.msg)
+                }
+			})
+        },
         toLogin:function(){
             this.$router.push({name:"XMLogin",query:{type:"3"}})
         },

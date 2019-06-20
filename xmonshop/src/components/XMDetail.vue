@@ -5,23 +5,8 @@
 
 		<!-- 主体 -->
 		<div v-if="!showCarts">
-			<popup v-model="showComno" position="bottom" max-height="60%" style="background:white;">
-				<div class="popup_content">
-					<p class="total_price_lab">共计:￥{{totalPrice}}</p>
-					<div class="combo_cell" v-for="item,groIndex in combo">
-						<p v-text="item.name" class="combo_title"></p>
-						<div class="combo_check_div">
-							<!-- <span class="combo_checkbox" :class="{combo_checkbox_select:index===item.selectIndex}"  v-text="ele.type" v-for="ele,index in item.values" @click="selectComboCheck(groIndex,index,ele.price)"></span> -->
-							<span class="combo_checkbox" :class="{combo_checkbox_select:index===item.selectIndex}"  v-text="ele.type" v-for="ele,index in item.values" @click="selectComboCheck(groIndex,index,ele.price)"></span>
-						</div>
 
-					</div>
-					<div class="combo_cell_num">
-							<x-number title="购买数量" align="right"  button-style="square" :min="1" :max="99" v-model="proNum" :fillable="true"></x-number>
-					</div>
-				</div>
-				<div class="xm_btn" @click="comboDidClick">确定</div>
-			</popup>
+			<xmcombo ref="combo" :combo="combo" @comboDidClick="selectCombo"></xmcombo>
 				
 			<div class="detail_photo_div">
 				<img :src="itemData.pic">
@@ -59,19 +44,19 @@
 <script>
 
 import commonUtil from "../common/common";
-import { Loading,Popup,Checker, CheckerItem,XNumber,Confirm } from "vux";
+import { Loading,Confirm } from "vux";
 import xmcarts from "./XMCarts"
+import xmcombo from "./XMCombo"
 
 
 export default {
   name: "xmdetail",
   components: {
-    xmcarts,Loading,Popup,Checker, CheckerItem,XNumber,Confirm
+    xmcarts,xmcombo,Loading,Confirm
 	},
 	props:[],
 	computed:{
 		detailImgs:function(){
-			console.log(this.itemData.smallImage)
 			if(this.itemData.smallImage === "" || !this.itemData.smallImage) return [];
 			let spraStr = "|&&|"
 			try{
@@ -85,15 +70,6 @@ export default {
 				console.log(e)
 				return []
 			}
-		},
-		totalPrice:function(){
-			let totalP = 0;
-			for(let i=0;i<this.combo.length;i++){
-				let selectData = this.combo[i];
-				totalP += selectData.values[selectData.selectIndex].price
-			}
-			totalP = totalP * this.proNum
-			return totalP;
 		},
 	},
   data() {
@@ -156,9 +132,9 @@ export default {
 		getProductionById:function(id)
 		{ // 查询商品详情
 			let data = {
-					HEADER: {},
-					PARAMS: {id:Number(id)},
-					SERVICE: "ShopService.getProductionById"
+				HEADER: {},
+				PARAMS: {id:Number(id)},
+				SERVICE: "ShopService.getProductionById"
 			}
 
 			let _this = this;
@@ -203,42 +179,29 @@ export default {
 				}
 			});
 		},
-		updateCombo:function(data){
-			this.combo = data
-		},
-		selectComboCheck:function(groIndex,index,price){
-			// console.log(groIndex+"---"+index+"----"+price)
-			this.combo[groIndex].selectIndex = index;
-		},
 		showComnoPopup:function(isCreateOrder){
-			console.log(isCreateOrder)
 			let _this = this
 			this.avalidToken(function(data){
-				_this.showComno=true
+				_this.$refs.combo.show(true)
 				_this.isCreateOrder = isCreateOrder ? true : false
 			},function(err){
 				_this.showLoginConfirm = true
 			})
 		},
-		comboDidClick:function(){ 
+		selectCombo:function(typeStr,num,perPri){ 
 			if(this.isCreateOrder){
-				this.createOrder()
+				this.createOrder(typeStr,num,perPri)
 			}else{
-				this.addToCart()
+				this.addToCart(typeStr,num,perPri)
 			}
 		},
-		createOrder:function(){ // 立即购买
+		createOrder:function(typeStr,num,perPri){ // 立即购买
 			commonUtil.setCookie("_shouldPushHistory","true")
 			let proList = {};
 
-			let typeStr = "";
-			for(let i=0;i<this.combo.length;i++){
-				let selectData = this.combo[i];
-				typeStr = typeStr+"-"+selectData.values[selectData.selectIndex].type
-			}
-			proList.type = typeStr.substring(1);
-			proList.num = this.proNum
-			proList.price = this.totalPrice / this.proNum;
+			proList.type = typeStr
+			proList.num = num
+			proList.price = perPri
 			proList.itemId = this.itemData.itemId
 			proList.userId = commonUtil.getCookie("_userId")
 
@@ -266,21 +229,15 @@ export default {
 		toLoginPage:function(){
 			this.$router.push({path:"/login",query:{type:"1",itemId:this.itemData.itemId}})
 		},
-		addToCart:function()
+		addToCart:function(typeStr,num,perPri)
 		{
-			console.log(this.combo)
 			let params = {};
 
-			let typeStr = "";
-			for(let i=0;i<this.combo.length;i++){
-				let selectData = this.combo[i];
-				typeStr = typeStr+"-"+selectData.values[selectData.selectIndex].type
-			}
-			params.type = typeStr.substring(1);
-			params.num = this.proNum
-			params.price = this.totalPrice / this.proNum;
 			params.pic = this.itemData.pic
 			params.itemId = this.itemData.itemId
+			params.type = typeStr
+			params.num = num
+			params.price = perPri
 			params.itemName = this.itemData.itemName
 			params.userId = commonUtil.getCookie("_userId")
 
@@ -289,7 +246,6 @@ export default {
 				PARAMS: params,
 				SERVICE: "ShopService.addToCart"
 			}
-
 			let _this = this
 			_this.$axios({
 				url: commonUtil.serverUri(),
@@ -350,9 +306,6 @@ export default {
 .container,p,div{
 	margin: 0;
 	padding: 0;
-}
-.c-red{
-	color:red;
 }
 .detail_content{
 	padding: 0.5rem .5rem;
@@ -430,55 +383,6 @@ export default {
 	width: 1rem;
 	height: 1rem;
 }
-/*===========*/
-/* 型号弹框 */
-.total_price_lab{
-	color: red;
-	font-size: 1rem;
-	padding: 0.5rem;
-	text-align: left;
-}
-.combo_cell{
-	height: 5rem;
-}
-.combo_cell_num{
-	padding: 0.5rem;
-}
-.combo_title{
-	text-align: left;
-	padding: 0.5rem;
-}
-.combo_check_div{
-	display: flex;
-}
-.combo_checkbox{
-	padding:0.5rem  0.8rem;
-	margin:0 0.5rem;
-	background:#F5F5F5;
-	border-radius: 0.2rem;
-}
-.combo_checkbox_select{
-	/* border: 1px solid black; */
-	/* background: #4D3126; */
-	background: darkgray;
-	color: white;
-}
-
-.popup_content{
-	margin-bottom: 3rem;
-}
-.xm_btn{
-	position: fixed;;
-	bottom: 0;
-	width:100%;
-	height: 3rem;
-	/* background: #4D3126; */
-	background: darkgray;
-	line-height: 3rem;
-	font-size: 1.2rem;
-	color: white;
-}
-/*===========*/
 
 </style>
 

@@ -115,8 +115,7 @@ let queryCart = function(data) {
     return new Promise((resolve, reject) => {
         let sqlStr = `select * from cart where userId=${params.id};`
         db.query(sqlStr, [], function(result) {
-            console.log("查询购物车结果")
-            console.log(result.length)
+            console.log("查询购物车结果:" + esult.length)
             let resData = {}
             resData.status = "success"
             resData.cartList = result;
@@ -165,8 +164,7 @@ let addToCart = function(data) {
                 db.query(insertStr, insertArr, function(result, fields) {
                     console.log('购物车查询结果:' + result.length);
                     db.query(`select * from cart where userId=${params.userId}`, [], function(result, fields) {
-                        console.log('购物车:');
-                        console.log(result.length);
+                        console.log('购物车:' + result.length);
                         resData.status = 'success';
                         resData.msg = '添加入购物车成功';
                         resData.cartList = result;
@@ -238,6 +236,51 @@ let updateProductionNum = function(data) {
     })
 }
 
+// 更新购物车货品的型号
+let updateProductionType = function(data) {
+    let params = data.PARAMS;
+    return new Promise((resolve, reject) => {
+        let selSql = `SELECT * from cart WHERE itemId=? AND userId =? AND type=?`
+        let selData = [params.itemId, params.userId, params.type]
+        db.query(selSql, selData, function(selRes) {
+            if (selRes.length > 0 && selRes[0].id != params.id) {
+                let delSql = `DELETE FROM cart where id=${params.id}`
+                db.query(delSql, [], function(result, fields) {
+                    // 返回最新的数据
+                    let resData = {}
+                    resData.status = 'success'
+                    resData.msg = '删除旧的型号数据'
+                    resData.delete = true
+                    resolve(resData)
+                });
+            } else if (selRes.length == 0) {
+                let upSql = `UPDATE cart SET type='${params.type}' WHERE id=${params.id}`
+                db.query(upSql, [], function(result, fields) {
+                    console.log('更新商品型号');
+                    // 返回最新的数据
+                    let resData = {}
+                    resData.status = 'success'
+                    resData.msg = '购物车已更新该商品型号'
+                    resolve(resData);
+                });
+
+            } else {
+                let resData = {}
+                resData.status = 'success'
+                resData.msg = '无需更改型号'
+                resolve(resData);
+            }
+        })
+
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
+}
+
 module.exports = {
     shopServer: fn_shopServer,
 }
@@ -246,6 +289,7 @@ module.exports = {
 // queryCart({ PARAMS: { userId: 2 } });
 // getProductionById({ PARAMS: { id: "527106977940" } })
 // updateProductionNum({ PARAMS: { id: 72, num: 13} })
+// updateProductionType({ PARAMS: { id: 94, userId: "2", itemId: 566476976584, type: "蓝-中" } })
 
 // addToCart({
 //     PARAMS: {
