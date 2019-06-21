@@ -67,11 +67,20 @@ export default {
             this.$router.replace({name:"XMNewAddress",params:params})
         },
         selectAddress(index){
-            let params = this.addsData[index]
-            this.$router.replace({name:"XMOrder",params:params})
+            let selectAddressOnly =  commonUtil.getCookie("_selectAddressOnly")
+            if(selectAddressOnly === "false"){
+                let params = this.addsData[index]
+                this.$router.replace({name:"XMOrder",params:params})
+            }
         },
     },
     created:function(){
+        window.postMessage("hideTabbar","*")
+        let selectAddressOnly =  commonUtil.getQueryString("selectAddressOnly")
+        if(selectAddressOnly === "true"){
+            commonUtil.setCookie("_selectAddressOnly","true")
+        }
+
         this.queryAddressList()
     },
 }

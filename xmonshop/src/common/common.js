@@ -1,6 +1,8 @@
 function serverUri() {
     return "http://localhost:4001/servers?m" + Math.random();
     // return "http://172.20.105.87:4001/servers?m" + Math.random();
+    // return "http://192.168.1.102:4001/servers?m" + Math.random();
+    // return "http://192.168.1.106:4001/servers?m" + Math.random();
 }
 
 /*cookie编辑函数*/

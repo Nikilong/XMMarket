@@ -15,6 +15,7 @@ import XMSetting from '@/components/XMSetting'
 import XMOrder from '@/components/XMOrder'
 import XMAddressList from '@/components/XMAddressList'
 import XMNewAddress from '@/components/XMNewAddress'
+import XMOrderTab from '@/components/XMOrderTab'
 
 /*---------------axios-start----------------*/
 Vue.prototype.$axios = axios
@@ -37,6 +38,7 @@ const routes = [
     { path: '/setting', name: "XMSetting", component: XMSetting, meta: { title: "设置" } },
     { path: '/addressList', name: "XMAddressList", component: XMAddressList, meta: { title: "地址本" } },
     { path: '/newAddress', name: "XMNewAddress", component: XMNewAddress, meta: { title: "新建地址" } },
+    { path: '/orderTab', name: "XMOrderTab", component: XMOrderTab, meta: { title: "我的订单" } },
     { path: '*', redirect: '/home' },
 ]
 

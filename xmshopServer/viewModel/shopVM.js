@@ -115,7 +115,7 @@ let queryCart = function(data) {
     return new Promise((resolve, reject) => {
         let sqlStr = `select * from cart where userId=${params.id};`
         db.query(sqlStr, [], function(result) {
-            console.log("查询购物车结果:" + esult.length)
+            console.log("查询购物车结果:" + result.length)
             let resData = {}
             resData.status = "success"
             resData.cartList = result;

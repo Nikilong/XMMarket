@@ -101,7 +101,7 @@ let creatOrder = function(data) {
 // 确认订单(归档订单,等待付款发货等一系列后续步骤)
 let archiveOrder = function(data) {
     let params = data.PARAMS;
-    let sqlStr = `UPDATE orders SET isArchive=1,address_id=? WHERE serials=?`
+    let sqlStr = `UPDATE orders SET state=1,address_id=? WHERE serials=?`
     let sqlData = [params.address_id, params.serials]
     return new Promise((resolve, reject) => {
         // 查询实例

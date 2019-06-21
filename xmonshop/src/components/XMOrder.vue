@@ -95,6 +95,7 @@ export default {
 			});
         },
         openAddressList(){
+            commonUtil.setCookie("_selectAddressOnly","false")
             this.$router.replace("addressList")
         },
         backConfirmCancel(){

@@ -20,6 +20,10 @@
     color: #707070;
 }
 
+.bg-common {
+    background: #F4F4F4;
+}
+
 .bg-lightgray {
     background: #bfbfbf;
 }

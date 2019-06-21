@@ -293,6 +293,7 @@ export default {
 	margin-top: 1rem;
 	margin-bottom: 2.4rem;
 	overflow-x: hidden;
+	background: white;
 }
 
 .float_btns_view{
