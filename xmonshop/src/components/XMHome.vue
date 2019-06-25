@@ -1,15 +1,18 @@
 <template>
-  <div class="container" id="home_container">
+  <div class="container bg-common" id="home_container">
 	<div v-if="!showCarts">
 		<div class="float_btns_view">
 			<div class="float_icon">
 				<div class="toTop_icon" @click="scorllToTop"></div>
 			</div>
-			<!-- <div class="float_icon">
-				<div class="cart_float_icon" @click="showCartsPage"></div>
-			</div> -->
+			<div class="float_icon" v-if="!alignWaterflow">
+				<div class="list_icon" @click="transAlign"></div>
+			</div>
+			<div class="float_icon" v-if="alignWaterflow">
+				<div class="waterf_icon" @click="transAlign"></div>
+			</div>
 		</div>
-		<div v-for="item,index in shopList" class="list-item" data-type="0">
+		<div v-if="alignWaterflow" v-for="item,index in shopList" class="list-item" data-type="0">
 			<div class="list-box" @touchstart.capture="touchStart"  @touchend.capture="touchEnd" @click="openItem(item)">
 				<img :src="item.pic" class="item-pic">
 				<p v-text="item.itemName" class="title"></p>
@@ -31,12 +34,32 @@
 			<div class="delete_btn" @click="deleteItem" :data-index="index">删除</div>
 
 		</div>
+		<div v-if="!alignWaterflow" class="waterf-container ">
+			<div class="waterf-box" v-for="item,index in shopList" @click="openItem(item)">
+				<div class="waterf-img">
+					<img :src="item.pic">
+				</div>
+				<div class="waterf-title" v-text="item.itemName"></div>
+				<div class="waterf-ft" >
+					<div class="waterf-ft-left">
+						<span class="coupon-amount-tag p-icon" v-if=" Number(item.couponAmount) > 0"><span class="coupon-amount-price">{{item.couponAmount}}</span></span>
+						<span class="p-icon tmall-con" v-if="item.isTmall"></span>
+						<span class="p-icon" :class="{'postfee-icon': Number(item.realPostFee) == 0}">{{ Number(item.realPostFee) > 0 ? item.realPostFee : "包邮" }}</span>
+					</div>
+					<div class="waterf-ft-right">
+						<span class="c-red p-icon">¥</span>
+						<span class="c-red p-num">{{item.price < item.promotionPrice ? item.price : item.promotionPrice}}</span>
+						<span class="r-price" v-if=" item.price != item.promotionPrice">¥{{item.price > item.promotionPrice ? item.price : item.promotionPrice}}</span>
+					</div>
+				</div>
+			</div>
+
+		</div>
 		<div><load-more v-if="loadingMore.loading.status" :tip="loadingMore.loading.value"></load-more></div>
 		<div><load-more v-if="loadingMore.noMore.status" :show-loading="false" :tip="loadingMore.noMore.value" background-color="#fbf9fe"></load-more></div>
 	</div>
   </div>
 </template>
-
 
 
 <script>
@@ -55,6 +78,7 @@ export default {
     return {
 		showCarts:false, // 购物车
 		canEdit:false, // 能否编辑
+		alignWaterflow:false, // 瀑布流
 		shopList:[ ],
 		cartList:[],
 		loadingMore:{
@@ -260,6 +284,9 @@ export default {
 			}
 		});
 	},
+	transAlign(){
+		this.alignWaterflow = !this.alignWaterflow
+	},
 
   },
   created: function() {
@@ -289,11 +316,12 @@ export default {
 </script>
 
 <style scoped>
+
 .container{
-	margin-top: 1rem;
+	/* margin-top: 1rem; */
 	margin-bottom: 2.4rem;
 	overflow-x: hidden;
-	background: white;
+	/* background: white; */
 }
 
 .float_btns_view{
@@ -321,9 +349,10 @@ export default {
  .list-item{
     position: relative;
     height:7rem;
-		width: 100%;
-		-webkit-transition: all 0.2s;
-		transition: all 0.2s;
+	width: 100%;
+	-webkit-transition: all 0.2s;
+	transition: all 0.2s;
+	background: white;
 }
  .list-item:after{
     content: " ";
@@ -420,6 +449,46 @@ export default {
 		/* float:right; */
 }
 
+/* 瀑布流----start */
+.waterf-container{
+	column-count: 2; 
+    column-gap: 0; 
+	width: 100%;
+	height: 100%;
+	padding-top: 1rem;
+}
+.waterf-box{
+	display: inline-block;
+	width: calc(100% - 1.6rem);
+	margin: 0.4rem 0.4rem;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	background: white;
+}
+.waterf-img img{
+	border-radius: 0.3rem;
+	width: 100% !important;
+	display:block;
+}
+.waterf-title{
+	overflow:hidden;
+	/* text-overflow:ellipsis;  超出省略号*/
+	white-space:nowrap;
+	font-size: 1rem;
+	margin-right: 0.3rem;
+}
+.waterf-ft{
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+.waterf-ft-left span,.waterf-ft-right span{
+	line-height: 1rem;
+}
+.waterf-ft-right{
+	margin-left: auto;
+}
+/* 瀑布流----end */
 /* 侧滑----start */
 .list-item[data-type="0"] {
 		transform: translate3d(0, 0, 0);

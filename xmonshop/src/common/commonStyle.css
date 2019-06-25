@@ -52,6 +52,16 @@
     background-size: cover;
 }
 
+.list_icon {
+    background: url("../assets/icons/list_icon.svg");
+    background-size: cover;
+}
+
+.waterf_icon {
+    background: url("../assets/icons/waterf_icon.svg");
+    background-size: cover;
+}
+
 .home_icon {
     background: url("../assets/tabbar/tabbar_home.svg");
     background-size: cover;
