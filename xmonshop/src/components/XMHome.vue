@@ -318,10 +318,12 @@ export default {
 <style scoped>
 
 .container{
-	/* margin-top: 1rem; */
-	margin-bottom: 2.4rem;
 	overflow-x: hidden;
-	/* background: white; */
+	position: absolute;
+	top: 0;
+	bottom:2.4rem;
+	left: 0;
+	right: 0;
 }
 
 .float_btns_view{
@@ -452,15 +454,21 @@ export default {
 /* 瀑布流----start */
 .waterf-container{
 	column-count: 2; 
-    column-gap: 0; 
+    column-gap: 0rem; 
 	width: 100%;
 	height: 100%;
 	padding-top: 1rem;
 }
+
+@media screen and (min-width: 768px){
+	.waterf-container{
+		column-count: 4; 
+	}
+}
 .waterf-box{
 	display: inline-block;
-	width: calc(100% - 1.6rem);
-	margin: 0.4rem 0.4rem;
+	width: calc(100% - 2rem);
+	margin: 0.4rem 0.2rem;
 	padding: 0.5rem;
 	border-radius: 0.5rem;
 	background: white;
@@ -491,23 +499,23 @@ export default {
 /* 瀑布流----end */
 /* 侧滑----start */
 .list-item[data-type="0"] {
-		transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
 }
 
 .list-item[data-type="1"] {
-		transform: translate3d(-80px, 0, 0);
+	transform: translate3d(-80px, 0, 0);
 }
 .list-item .delete_btn {
-		width: 5rem;
-		height: 100%;
-		background: #ff4949;
-		font-size: 19px;
-		color: #fff;
-		text-align: center;
-		line-height: 7rem;
-		position: absolute;
-		top: 0;
-		right: -5rem;
+	width: 5rem;
+	height: 100%;
+	background: #ff4949;
+	font-size: 19px;
+	color: #fff;
+	text-align: center;
+	line-height: 7rem;
+	position: absolute;
+	top: 0;
+	right: -5rem;
 }
 /* 侧滑----end */
 </style>
