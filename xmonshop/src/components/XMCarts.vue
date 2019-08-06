@@ -3,8 +3,8 @@
     <div class="container">
         <xmcombo ref="combo" :combo="combo" :showNum="false" @comboDidClick="selectCombo"></xmcombo>
 
-        <div class="cars_container">
-            <div class="pro_cell" v-if="cartsData.length>0" v-for="item,daIndex in cartsData">
+        <div class="cars_container" v-if="cartsData.length>0">
+            <div class="pro_cell" v-for="(item,daIndex) in cartsData" :key="daIndex">
                 <div class="pro_cell_checkbox">
                     <div @click="changeCheckbox(item.id)" class="check_box_empty" :class="{'check_box_select':selectProIds.indexOf(item.id) >-1}"></div>
                 </div>

@@ -9,7 +9,7 @@
             <cell v-if="selectAddress.name" :title="selectAddress.name+' '+selectAddress.phone"  :inline-desc="selectAddress.area+' '+selectAddress.address" @click.native="openAddressList()" is-link></cell>
             <cell v-if="!selectAddress.name" title="请选择收货地址" @click.native="openAddressList" is-link></cell>
         </group>
-        <group :title="'订单金额'+(productionData.length>1?(index+1):'')" v-for="item,index in productionData">
+        <group :title="'订单金额'+(productionData.length>1?(index+1):'')" v-for="(item,index) in productionData" :key="index">
             <cell title="商品单价">￥{{item.price}}</cell>
             <cell title="数量">{{item.num}}</cell>
         </group>

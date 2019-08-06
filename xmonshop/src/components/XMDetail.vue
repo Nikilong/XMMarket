@@ -13,9 +13,9 @@
 			</div>
 			<div class="detail_content">
 				<p class="price-con">
-						<span class="c-red p-icon">¥</span>
-						<span class="c-red p-num">{{itemData.price < itemData.promotionPrice ? itemData.price : itemData.promotionPrice}}</span>
-						<span class="r-price" v-if=" itemData.price != itemData.promotionPrice">¥{{itemData.price > itemData.promotionPrice ? itemData.price : itemData.promotionPrice}}</span>
+					<span class="c-red p-icon">¥</span>
+					<span class="c-red p-num">{{(itemData.price<itemData.promotionPrice)?itemData.price:itemData.promotionPrice}}</span>
+					<span class="r-price" v-if="itemData.price!=itemData.promotionPrice">¥{{(itemData.price>itemData.promotionPrice)?itemData.price:itemData.promotionPrice}}</span>
 				</p>
 				<p>{{itemData.itemName}}</p>
 			</div>
@@ -23,7 +23,7 @@
 				<p>{{itemData.subTitle}}</p>
 			</div>
 			<div class="detail_photo_div" v-if="detailImgs.length > 0" style="margin-bottom:3rem;">
-				<img :src="url" v-for="url in detailImgs"> 
+				<img :src="url" v-for="url in detailImgs" :key="url"> 
 			</div>
 
 			<div class="ft_bar">

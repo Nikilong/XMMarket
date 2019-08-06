@@ -30,7 +30,7 @@
     <transition name="v-animate-slideToTop"   v-on:after-leave="showLoginPage=true">
       <form @submit.prevent="addNewUser" v-if="showCreatPage">
         <div>
-          <p class="flex-box" v-for="item,index in userNew">
+          <p class="flex-box" v-for="(item,index) in userNew" :key="index">
             
             <span class="flex-item-lab"><span v-if="index===0 && checkAccountTips.show" class="checkAccount-tip"><icon :type="checkAccountTips.type"></icon></span>{{item.name}}:</span>
             <input class="flex-item-input" v-model="item.value" :name="item.dsName" :ref="item.dsName" :type="item.type"  @blur.prevent="inputBlurEvent($event,1,item.dsName)">
@@ -51,7 +51,7 @@
     <transition name="v-animate-slideToTop" v-on:after-leave="showLoginPage=true">
       <form @submit.prevent="changePassword" v-if="showPwdPage">
         <div>
-          <p  class="flex-box" v-for="item in userPwd">
+          <p  class="flex-box" v-for="item in userPwd" :key="item">
             <span class="flex-item-lab">{{item.name}}:</span>
             <input class="flex-item-input" v-model="item.value" :name="item.dsName" :ref="item.dsName" :type="item.type">
             <span class="flex-item-ft"></span>

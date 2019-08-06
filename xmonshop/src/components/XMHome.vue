@@ -12,30 +12,32 @@
 				<div class="waterf_icon" @click="transAlign"></div>
 			</div>
 		</div>
-		<div v-if="alignWaterflow" v-for="item,index in shopList" class="list-item" data-type="0">
-			<div class="list-box" @touchstart.capture="touchStart"  @touchend.capture="touchEnd" @click="openItem(item)">
-				<img :src="item.pic" class="item-pic">
-				<p v-text="item.itemName" class="title"></p>
-				<p class="icon-list">
-					<span class="coupon-amount-tag p-icon" v-if=" Number(item.couponAmount) > 0"><span class="coupon-amount-price">{{item.couponAmount}}</span></span>
-					<span class="p-icon tmall-con" v-if="item.isTmall"></span>
-					<span class="p-icon" :class="{'postfee-icon': Number(item.realPostFee) == 0}">{{ Number(item.realPostFee) > 0 ? item.realPostFee : "包邮" }}</span>
-				</p>
-				<p class="price-con">
-					<span class="c-red p-icon">¥</span>
-					<span class="c-red p-num">{{item.price < item.promotionPrice ? item.price : item.promotionPrice}}</span>
-					<span class="r-price" v-if=" item.price != item.promotionPrice">¥{{item.price > item.promotionPrice ? item.price : item.promotionPrice}}</span>
-				</p>
-				<p class="other-info">
-					<span class="fr">月销 {{item.monthSellCount}}</span>
-				</p>
-			</div>
-			<!-- 删除按钮 -->
-			<div class="delete_btn" @click="deleteItem" :data-index="index">删除</div>
+		<div v-if="alignWaterflow">
+			<div v-for="(item,index) in shopList" class="list-item" data-type="0" :key="index">
+				<div class="list-box" @touchstart.capture="touchStart"  @touchend.capture="touchEnd" @click="openItem(item)">
+					<img :src="item.pic" class="item-pic">
+					<p v-text="item.itemName" class="title"></p>
+					<p class="icon-list">
+						<span class="coupon-amount-tag p-icon" v-if=" Number(item.couponAmount) > 0"><span class="coupon-amount-price">{{item.couponAmount}}</span></span>
+						<span class="p-icon tmall-con" v-if="item.isTmall"></span>
+						<span class="p-icon" :class="{'postfee-icon': Number(item.realPostFee) == 0}">{{ Number(item.realPostFee) > 0 ? item.realPostFee : "包邮" }}</span>
+					</p>
+					<p class="price-con">
+						<span class="c-red p-icon">¥</span>
+						<span class="c-red p-num">{{item.price<item.promotionPrice?item.price:item.promotionPrice}}</span>
+						<span class="r-price" v-if=" item.price != item.promotionPrice">¥{{item.price > item.promotionPrice ? item.price : item.promotionPrice}}</span>
+					</p>
+					<p class="other-info">
+						<span class="fr">月销 {{item.monthSellCount}}</span>
+					</p>
+				</div>
+				<!-- 删除按钮 -->
+				<div class="delete_btn" @click="deleteItem" :data-index="index">删除</div>
 
+			</div>
 		</div>
 		<div v-if="!alignWaterflow" class="waterf-container ">
-			<div class="waterf-box" v-for="item,index in shopList" @click="openItem(item)">
+			<div class="waterf-box" v-for="(item,index) in shopList" @click="openItem(item)" :key="index">
 				<div class="waterf-img">
 					<img :src="item.pic">
 				</div>
@@ -48,7 +50,7 @@
 					</div>
 					<div class="waterf-ft-right">
 						<span class="c-red p-icon">¥</span>
-						<span class="c-red p-num">{{item.price < item.promotionPrice ? item.price : item.promotionPrice}}</span>
+						<span class="c-red p-num">{{item.price<item.promotionPrice?item.price:item.promotionPrice}}</span>
 						<span class="r-price" v-if=" item.price != item.promotionPrice">¥{{item.price > item.promotionPrice ? item.price : item.promotionPrice}}</span>
 					</div>
 				</div>

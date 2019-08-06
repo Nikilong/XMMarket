@@ -12,8 +12,8 @@
             </tab>
         </div>
         <div v-if="selectTabIndex===0||selectTabIndex===1">
-             <div class="cars_container">
-                <div class="pro_cell" v-if="ordersData.length>0" v-for="item,daIndex in ordersData">
+             <div class="cars_container" v-if="ordersData.length>0">
+                <div class="pro_cell"  v-for="(item,daIndex) in ordersData" :key="daIndex">
                     <div class="pro_cell_header"><p>待付款</p></div>
                     <div class="pro_cell_content">
                         <div class="pro_cell_img" @click="openItem(item)">

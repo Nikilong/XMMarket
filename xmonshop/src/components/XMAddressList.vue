@@ -1,7 +1,7 @@
 <template>
     <div class="container">
 
-        <div class="pro_cell" v-for="item,daIndex in addsData" @click="selectAddress(daIndex)">
+        <div class="pro_cell" v-for="(item,daIndex) in addsData" @click="selectAddress(daIndex)"  :key="daIndex">
             <div class="pro_cell_title">{{item.name+" "+item.phone}}<span class="pro_cell_edit_btn" @click.stop="editAddress(daIndex)">编辑</span></div>
             <div class="pro_cell_type">{{item.area+" "+item.address}}</div>
         </div>

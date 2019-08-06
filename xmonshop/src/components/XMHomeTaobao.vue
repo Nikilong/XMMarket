@@ -8,22 +8,22 @@
       <span v-text="userName"></span>
       <span class="logout_btn c-red" @click="logout">注销</span>
     </div>
-    <div v-for="item in shopList" class="item-one-list" @click="openItem(item.url)">
-					<img :src="item.pic" class="item-pic">
-					<p v-text="item.itemName" class="title"></p>
-					<p class="icon-list">
-							<span class="coupon-amount-tag p-icon" v-if=" Number(item.couponAmount) > 0"><span class="coupon-amount-price">{{item.couponAmount}}</span></span>
-							<span class="p-icon tmall-con" v-if="item.isTmall"></span>
-							<span class="p-icon" :class="{'postfee-icon': Number(item.realPostFee) == 0}">{{ Number(item.realPostFee) > 0 ? item.realPostFee : "包邮" }}</span>
-					</p>
-					<p class="price-con">
-							<span class="c-red p-icon">¥</span>
-							<span class="c-red p-num">{{item.price < item.promotionPrice ? item.price : item.promotionPrice}}</span>
-							<span class="r-price" v-if=" item.price != item.promotionPrice">¥{{item.price > item.promotionPrice ? item.price : item.promotionPrice}}</span>
-					</p>
-					<p class="other-info">{{item.provcity}}
-							<span class="fr">月销 {{item.monthSellCount}}</span>
-					</p>
+    <div v-for="item in shopList" class="item-one-list" @click="openItem(item.url)" :key="item">
+		<img :src="item.pic" class="item-pic">
+		<p v-text="item.itemName" class="title"></p>
+		<p class="icon-list">
+				<span class="coupon-amount-tag p-icon" v-if=" Number(item.couponAmount) > 0"><span class="coupon-amount-price">{{item.couponAmount}}</span></span>
+				<span class="p-icon tmall-con" v-if="item.isTmall"></span>
+				<span class="p-icon" :class="{'postfee-icon': Number(item.realPostFee) == 0}">{{ Number(item.realPostFee) > 0 ? item.realPostFee : "包邮" }}</span>
+		</p>
+		<p class="price-con">
+				<span class="c-red p-icon">¥</span>
+				<span class="c-red p-num">{{item.price<item.promotionPrice?item.price:item.promotionPrice}}</span>
+				<span class="r-price" v-if=" item.price != item.promotionPrice">¥{{item.price > item.promotionPrice ? item.price : item.promotionPrice}}</span>
+		</p>
+		<p class="other-info">{{item.provcity}}
+				<span class="fr">月销 {{item.monthSellCount}}</span>
+		</p>
 
     </div>
   </div>
