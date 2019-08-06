@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <router-view></router-view>
+
+     <!-- 提醒类 -->
+		<confirm v-model="isShowConfirm" :content="confirmText" :show-cancel-button="false" @on-hide="hideConfirm"></confirm>
+    <toast v-model="isShowToast" :type="toastType" @on-hide="hideConfirm">{{confirmText}}</toast>
     
+
+    <!-- <div>{{aaa}}</div> -->
     <div class="ft_bar" v-if="showTabbar">
       <div class="tool_bar">
           <tabbar @on-index-change="tabbarDidClick">
@@ -28,14 +34,13 @@
 
 <script>
 import commonUtil from './common/common'
-
-
-import {Tabbar, TabbarItem} from "vux";
+import {Tabbar, TabbarItem, Confirm, Toast} from "vux"
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "App",
   components: {
-    Tabbar, TabbarItem
+    Tabbar, TabbarItem,Confirm,Toast
   },
   data() {
     return {
@@ -45,6 +50,44 @@ export default {
       showProDot:false,  // 商品是否有更新
     };
   },
+  computed:{
+    // ...mapState({  //这里的...是超引用，ES6的语法，意思是state里有多少属性值我可以在这里放多少属性值
+    //      isShow:{
+    //        get:state=>state.storeCenter.showConfirmFlag,
+    //        set:()=> console.log("111111")
+    //       } //注意这些与上面的区别就是state.footerStatus,
+    //                                                   //里面定义的showFooter是指footerStatus.js里state的showFooter
+    //   }),
+    isShowConfirm:{
+        get:function(){
+          return this.$store.state.toastCenter.showConfirmFlag
+        },
+        set:function(){}
+    },
+    isShowToast:{
+        get:function(){
+          return this.$store.state.toastCenter.showToastFlag
+        },
+        set:function(){}
+    },
+    confirmText:{
+        get:function(){
+          return this.$store.state.toastCenter.content
+        },
+        set:function(){}
+    },
+    toastType:{
+        get:function(){
+          return this.$store.state.toastCenter.toastType
+        },
+        set:function(){}
+    }
+  },
+  // watch:{
+  //     // isShow(val){
+  //     //     console.log("---showConfirmAAA")
+  //     // },
+  // },
   created: function() {
     let _this = this
     window.addEventListener("message",this.handleMessage,false)
@@ -53,6 +96,9 @@ export default {
     window.removeEventListener("message",this.handleMessage,false)
   },
   methods:{
+    hideConfirm:function(){
+        this.$store.dispatch('toastCenter/hideToast') 
+    },
     avalidToken:function(callback,failedCallback) //检查token是否有效
     {
       let userId = commonUtil.getCookie("_userId")

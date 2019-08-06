@@ -1,12 +1,4 @@
-import Vue from 'vue'
-import App from '../App'
-import axios from 'axios'
-import { Loading, Toast, Confirm, Icon } from 'vux'
-
-import store from '../store'
-
-
-let serverUri = function() {
+function serverUri() {
     return "http://localhost:4001/servers?m" + Math.random();
     // return "http://172.20.105.87:4001/servers?m" + Math.random();
     // return "http://192.168.1.102:4001/servers?m" + Math.random();
@@ -15,22 +7,22 @@ let serverUri = function() {
 
 /*cookie编辑函数*/
 // [Cookie] Clears a cookie 
-let clearCookie = function(cookieName) {
-        var now = new Date(),
-            yesterday = new Date(now.getTime() - 1000 * 60 * 60 * 24);
-        setCookie(cookieName, 'cookieValue', yesterday);
-    }
-    // [Cookie] Sets value in a cookie
-let setCookie = function(cookieName, cookieValue, expires, path, domain, secure) {
-        var cookie = escape(cookieName) + '=' + escape(cookieValue);
-        if (expires) cookie += ';expires=' + expires.toGMTString();
-        if (path) cookie += ';path=' + path;
-        if (domain) cookie += ';domain=' + domain;
-        if (secure) cookie += ';secure=' + secure;
-        document.cookie = cookie;
-    }
-    // [Cookie] Gets a value from a cookie
-let getCookie = function(cookieName) {
+function clearCookie(cookieName) {
+    var now = new Date(),
+        yesterday = new Date(now.getTime() - 1000 * 60 * 60 * 24);
+    setCookie(cookieName, 'cookieValue', yesterday);
+}
+// [Cookie] Sets value in a cookie
+function setCookie(cookieName, cookieValue, expires, path, domain, secure) {
+    var cookie = escape(cookieName) + '=' + escape(cookieValue);
+    if (expires) cookie += ';expires=' + expires.toGMTString();
+    if (path) cookie += ';path=' + path;
+    if (domain) cookie += ';domain=' + domain;
+    if (secure) cookie += ';secure=' + secure;
+    document.cookie = cookie;
+}
+// [Cookie] Gets a value from a cookie
+function getCookie(cookieName) {
     var cookieValue = '',
         cookie = document.cookie,
         posName = cookie.indexOf(escape(cookieName) + '=');
@@ -46,14 +38,14 @@ let getCookie = function(cookieName) {
     return (cookieValue)
 };
 
-let getQueryString = function(name) {
+function GetQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]);
     return null;
 }
 
-let scrollAnimation = function(currentY, targetY) {
+function scrollAnimation(currentY, targetY) {
     // 计算需要移动的距离
     let needScrollTop = targetY - currentY
     let _currentY = currentY
@@ -72,45 +64,22 @@ let scrollAnimation = function(currentY, targetY) {
 }
 
 // push一个空白url
-let pushHistory = function() {
+function pushHistory() {
     let state = { title: "_pushHistoryTitle", url: "" }
     window.history.pushState(state, state.title, state.url)
 }
 
-let isPushHistory = function() {
+function isPushHistory() {
     return window.history.state.title === "_pushHistoryTitle"
 }
 
-let ask = function() {
-    console.log("ask=======")
-        // 获取商品清单
-    let data = {
-        HEADER: {},
-        PARAMS: { num: 10, pageNum: 0 },
-        SERVICE: "ShopService.queryProductions"
-    };
-    axios({
-        url: "http://localhost:4001/servers?m0.7778315282227477",
-        method: "post",
-        data: data
-    }).then(function(response) {
-        console.log(response)
-    });
-}
-
-let toast = function(type, text) {
-    store.dispatch('toastCenter/showToast', { text: 'hello world', type: "warn" })
-}
-
-export default {
-    serverUri,
-    clearCookie,
-    setCookie,
-    getCookie,
-    getQueryString,
-    scrollAnimation,
-    pushHistory,
-    isPushHistory,
-    ask,
-    toast
+module.exports = {
+    serverUri: serverUri,
+    setCookie: setCookie,
+    getCookie: getCookie,
+    clearCookie: clearCookie,
+    scrollAnimation: scrollAnimation,
+    getQueryString: GetQueryString,
+    pushHistory: pushHistory,
+    isPushHistory: isPushHistory,
 }

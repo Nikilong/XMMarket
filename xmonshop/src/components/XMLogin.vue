@@ -71,7 +71,6 @@
 </template>
 
 <script>
-import commonUtil from '../common/common'
 import {Loading,Toast,Confirm,Icon} from 'vux'
 import { setTimeout } from 'timers'
 
@@ -158,7 +157,7 @@ export default {
         };
         let _this = this;
         this.$axios({
-          url: commonUtil.serverUri(),
+          url: this.$nkUtil.serverUri(),
           method: "post",
           data: data
         }).then(
@@ -169,13 +168,13 @@ export default {
               _this.XMToast("success",'登陆成功')
 
               let userMsg = response.data.userMsg; 
-              commonUtil.setCookie("_accesstoken",userMsg.accesstoken,new Date(userMsg.expire_time))
-              commonUtil.setCookie("_account",userMsg.account)
-              commonUtil.setCookie("_userName",userMsg.name)
-              commonUtil.setCookie("_userId",userMsg.id)
+              _this.$nkUtil.setCookie("_accesstoken",userMsg.accesstoken,new Date(userMsg.expire_time))
+              _this.$nkUtil.setCookie("_account",userMsg.account)
+              _this.$nkUtil.setCookie("_userName",userMsg.name)
+              _this.$nkUtil.setCookie("_userId",userMsg.id)
 
-              let itemId = commonUtil.getQueryString("itemId")
-              let type = commonUtil.getQueryString("type")
+              let itemId = _this.$nkUtil.getQueryString("itemId")
+              let type = _this.$nkUtil.getQueryString("type")
               setTimeout(() => {
                 if(itemId && type==="1"){
                   _this.$router.push({path:"/detail",query:{itemId:itemId}})
@@ -253,7 +252,7 @@ export default {
       };
       let _this = this;
       this.$axios({
-        url: commonUtil.serverUri(),
+        url: this.$nkUtil.serverUri(),
         method: "post",
         data: data
       }).then(function(response) {
@@ -310,7 +309,7 @@ export default {
       };
       let _this = this;
       this.$axios({
-        url: commonUtil.serverUri(),
+        url: this.$nkUtil.serverUri(),
         method: "post",
         data: data
       }).then(function(response) {
@@ -354,7 +353,7 @@ export default {
         };
         let _this = this
         this.$axios({
-          url: commonUtil.serverUri(),
+          url: this.$nkUtil.serverUri(),
           method: "post",
           data: data
         }).then(
@@ -375,6 +374,16 @@ export default {
           }
         );
     },
+    // aaaa(){
+    //   this.$nkUtil.ask()
+    // },
+    // bbbb(){
+    //   // this.$nkUtil.toast()
+    //   console.log("bbbbb0----")
+    //   this.$nkUtil.toast("warn","helloworld")
+    //   // this.$store.dispatch('toastCenter/showToast',{text:'hello world',type:undefined}) 
+    //   // this.$store.dispatch('toastCenter/showToast',{text:'hello world',type:"warn"}) 
+    // },
   }
 };
 </script>

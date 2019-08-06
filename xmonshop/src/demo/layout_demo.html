@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+    
+    .warp1 {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        background: yellow;
+        margin-top: 50px;
+        margin-left: 50px;
+        padding: 30px;
+        border: red solid 40px;
+    }
+    
+    .left1 {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100px;
+        background: greenyellow;
+    }
+    
+    .top1 {
+        position: absolute;
+        left: 100px;
+        top: 0;
+        width: calc(100% - 100px);
+        height: 50px;
+        background: gray;
+    }
+    
+    .main1 {
+        position: absolute;
+        left: 100px;
+        top: 50px;
+        bottom: 0;
+        right: 0;
+        margin: 10px;
+        background: green;
+    }
+    /* .left {
+        width: 200px;
+        height: 300px;
+        background: yellow;
+        float: left;
+    }
+    
+    .right {
+        width: 150px;
+        height: 300px;
+        background: green;
+        float: right;
+    }
+    
+    .middle {
+        height: 300px;
+        background: red;
+        margin-left: 220px;
+        margin-right: 160px;
+    } */
+    
+    .wrapper {
+        display: flex;
+    }
+    
+    .left {
+        width: 200px;
+        height: 300px;
+        background: green;
+    }
+    
+    .middle {
+        width: 100%;
+        background: red;
+        margin: 0 20px;
+    }
+    
+    .right {
+        width: 200px;
+        height: 3000px;
+        background: yellow;
+    }
+</style>
+
+<body>
+    <div class="warp1">
+        <div class="left1">left</div>
+        <div class="top1">top</div>
+        <div class="main1">main</div>
+    </div>
+
+
+</body>
+
+<script>
+    // var aaa = "hello";
+    // var bb = function(flag) {
+    //     if (flag === true) {
+    //         var aaa = "jack"
+    //         console.log(aaa)
+    //     } else {
+    //         console.log(aaa)
+    //     }
+    //     console.log("---", aaa)
+    // };
+    // bb(true);
+    // bb(false);
+    // console.log("====", aaa)
+
+    function a() {
+        var n = 0;
+        this.inc = function() {
+            n++;
+            console.log(n);     
+        };
+    }
+    var c = new a();
+    var d = new a();
+    c.inc(); //控制台输出1
+    c.inc(); //控制台输出2
+    d.inc();
+</script>
+
+</html>

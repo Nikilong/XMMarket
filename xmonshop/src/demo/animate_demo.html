@@ -39,6 +39,21 @@
     </div>
 
     <script>
+        // 'use strict'
+
+        function foo(arg) {
+            this.a = arg;
+            return this
+        };
+
+        var a = foo(1);
+        // var b = foo(10);
+
+        console.log("--------"); // ?
+        console.log(a.a); // ?
+        // console.log(b.a); // ?
+        console.log("--------"); // ?
+
         var vm = new Vue({
             el: "#root",
             data: {

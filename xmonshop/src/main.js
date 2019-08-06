@@ -5,6 +5,11 @@ import App from './App'
 // import router from './router'
 import axios from 'axios'
 
+import store from './store'
+
+
+import nkUtil from './common/common'
+
 
 //新建并引入组件
 import XMLogin from '@/components/XMLogin'
@@ -19,6 +24,7 @@ import XMOrderTab from '@/components/XMOrderTab'
 
 /*---------------axios-start----------------*/
 Vue.prototype.$axios = axios
+Vue.prototype.$nkUtil = nkUtil
 Vue.config.productionTip = false
 
 /*---------------axios-end----------------*/
@@ -58,15 +64,9 @@ router.beforeEach((to, from, next) => {
 /*---------------VueRouter-end----------------*/
 
 /*---------------vux-start----------------*/
-import Vuex from 'vuex'
-Vue.use(Vuex)
+// import Vuex from 'vuex'
+// Vue.use(Vuex)
 
-import vuexI18n from 'vuex-i18n'
-let store = new Vuex.Store({
-    modules: {
-        i18n: vuexI18n.store
-    }
-})
 import { TransferDom, Alert, Popup, Group, Cell, XButton, XSwitch, Scroller, Toast, XAddress, ChinaAddressData, Actionsheet, DatetimePlugin, LocalePlugin, DevicePlugin, ToastPlugin, AlertPlugin, ConfirmPlugin, LoadingPlugin, WechatPlugin, AjaxPlugin, AppPlugin } from 'vux'
 
 Vue.use(DevicePlugin)
@@ -78,18 +78,15 @@ Vue.use(WechatPlugin)
 Vue.use(AjaxPlugin)
 Vue.use(LocalePlugin)
 Vue.use(DatetimePlugin)
-Vue.use(vuexI18n.plugin, store)
+    // Vue.use(vuexI18n.plugin, store)
 
 /*---------------vux-end----------------*/
-
-
-// import commonUtil from './common/common'
-// Vue.use(commonUtil)
 
 /* eslint-disable no-new */
 new Vue({
     el: '#app',
     router, // 挂载路由
+    store,
     components: { App },
     template: '<App/>'
 })
