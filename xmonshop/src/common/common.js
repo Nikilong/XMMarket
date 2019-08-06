@@ -57,6 +57,7 @@ let scrollAnimation = function(currentY, targetY) {
     // 计算需要移动的距离
     let needScrollTop = targetY - currentY
     let _currentY = currentY
+    console.log(needScrollTop, _currentY, currentY)
     setTimeout(() => {
         // 一次调用滑动帧数，每次调用会不一样
         const dist = Math.ceil(needScrollTop / 10)
@@ -98,8 +99,42 @@ let ask = function() {
     });
 }
 
+//检查token是否有效
+let avalidToken = function(callback, failedCallback) {
+    let userId = getCookie("_userId")
+    let token = getCookie("_accesstoken")
+
+    let result = {}
+    if (userId.trim().length > 0 && token.trim().length > 0) {
+        let data = {
+            HEADER: {},
+            PARAMS: { userId: userId, accesstoken: token },
+            SERVICE: "LoginService.validToken"
+        }
+        axios({
+                url: serverUri(),
+                method: "post",
+                data: data
+            })
+            .then(function(response) {
+                console.log(response.data)
+                if (response.data.status === "success") {
+                    callback && callback(response.data)
+                } else {
+                    failedCallback && failedCallback(response.data)
+                }
+            })
+    } else {
+        result.status = "failed"
+        result.msg = "userId或者acctoken不存在"
+        failedCallback && failedCallback(result)
+    }
+}
+
+
+/// 公用弹框
 let toast = function(type, text) {
-    store.dispatch('toastCenter/showToast', { text: 'hello world', type: "warn" })
+    store.dispatch('toastCenter/showToast', { text: text, type: type })
 }
 
 export default {
@@ -112,5 +147,6 @@ export default {
     pushHistory,
     isPushHistory,
     ask,
+    avalidToken,
     toast
 }

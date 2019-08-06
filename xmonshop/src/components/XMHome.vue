@@ -2,9 +2,9 @@
   <div class="container bg-common" id="home_container">
 	<div v-if="!showCarts">
 		<div class="float_btns_view">
-			<div class="float_icon">
+			<!-- <div class="float_icon">
 				<div class="toTop_icon" @click="scorllToTop"></div>
-			</div>
+			</div> -->
 			<div class="float_icon" v-if="!alignWaterflow">
 				<div class="list_icon" @click="transAlign"></div>
 			</div>
@@ -64,7 +64,6 @@
 
 <script>
 
-import commonUtil from "../common/common"
 import { Loading,LoadMore } from "vux"
 
 
@@ -103,38 +102,6 @@ export default {
   },
   computed: {},
   methods: {
-	avalidToken:function(callback,failedCallback) //检查token是否有效
-	{
-		let userId = commonUtil.getCookie("_userId")
-		let token = commonUtil.getCookie("_accesstoken")
-
-		let result = {}
-		if(userId.trim().length > 0 && token.trim().length > 0){
-			let data = {
-				HEADER: {},
-				PARAMS: {userId:userId,accesstoken:token},
-				SERVICE: "LoginService.validToken"
-			}
-			let _this = this;
-			this.$axios({
-				url: commonUtil.serverUri(),
-				method: "post",
-				data: data
-			})
-			.then(function(response){
-					console.log(response.data)
-					if (response.data.status === "success") {
-						callback && callback(response.data)
-					} else {
-						failedCallback && failedCallback(response.data)
-					}
-			})
-		}else{
-			result.status = "failed"
-			result.msg = "userId或者acctoken不存在"
-			failedCallback && failedCallback(result)
-		}
-    },
 	openItem:function(item){
 		console.log("open---item")
 		window.onscroll = null
@@ -144,7 +111,7 @@ export default {
 	scorllToTop:function(){
 		//平顺滚动动画
 		const currentY = document.documentElement.scrollTop || document.body.scrollTop;
-		commonUtil.scrollAnimation(currentY,0);
+		this.$nkUtil.scrollAnimation(currentY,0);
 	},
 	showCartsPage:function(){
 		// this.showCarts = !this.showCarts
@@ -159,7 +126,7 @@ export default {
 		};
 		let _this = this;
 		this.$axios({
-			url: commonUtil.serverUri(),
+			url: _this.$nkUtil.serverUri(),
 			method: "post",
 			data: data
 		}).then(function(response) {
@@ -175,10 +142,10 @@ export default {
 				
 				// 比对时间看商品是否有更新
 				if(_this.shopList.length > 0){
-					let lastModify = commonUtil.getCookie("_lastProModify")
+					let lastModify = _this.$nkUtil.getCookie("_lastProModify")
 					let newModify = _this.shopList[0].lastModify
 					if(lastModify != newModify){
-						commonUtil.setCookie("_lastProModify",newModify)
+						_this.$nkUtil.setCookie("_lastProModify",newModify)
 						window.postMessage("productionsHaveModify","*")
 					}
 				}
@@ -188,7 +155,7 @@ export default {
 						_this.loadingMore.noMore.status = true;
 				}
 			} else {
-				alert("无数据")
+				this.$nkUtil.toast("warn","无数据")
 			}
 		});
 	},
@@ -255,7 +222,7 @@ export default {
 			};
 		let _this = this;
 		this.$axios({
-				url: commonUtil.serverUri(),
+				url: _this.$nkUtil.serverUri(),
 				method: "post",
 				data: data
 			}).then(function(response) {
@@ -263,7 +230,7 @@ export default {
 				if (response.data.status === "success") {
 					_this.shopList.splice(index, 1);
 				} else {
-					alert("删除失败")
+					this.$nkUtil.toast("warn","删除失败")
 				}
 			});
 	},
@@ -293,7 +260,7 @@ export default {
 		window.postMessage("showHome","*")
 		// 判断是否有编辑
 		let _this = this
-		this.avalidToken(function(data){
+		this.$nkUtil.avalidToken(function(data){
 			console.log(data)
 			if(data.editRight > 7){
 				_this.canEdit = true

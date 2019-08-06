@@ -47,7 +47,6 @@
 
 
 <script>
-import commonUtil from "../common/common";
 import {Cell,Checklist,XNumber} from "vux";
 import { setTimeout } from 'timers';
 import xmcombo from "./XMCombo"
@@ -85,48 +84,16 @@ export default {
         }
     },
     methods:{
-        avalidToken:function(callback,failedCallback) //检查token是否有效
-        {
-            let userId = commonUtil.getCookie("_userId")
-            let token = commonUtil.getCookie("_accesstoken")
-
-            let result = {}
-            if(userId.trim().length > 0 && token.trim().length > 0){
-                let data = {
-                    HEADER: {},
-                    PARAMS: {userId:userId,accesstoken:token},
-                    SERVICE: "LoginService.validToken"
-                }
-                let _this = this;
-                this.$axios({
-                    url: commonUtil.serverUri(),
-                    method: "post",
-                    data: data
-                })
-                .then(function(response){
-                    console.log(response.data)
-                    if (response.data.status === "success") {
-                        callback && callback(response.data)
-                    } else {
-                        failedCallback && failedCallback(response.data)
-                    }
-                })
-            }else{
-                result.status = "failed"
-                result.msg = "userId或者acctoken不存在"
-                failedCallback && failedCallback(result)
-            }
-        },
         queryCarts:function(){
             let _this = this
-            this.avalidToken(function(result){
+            this.$nkUtil.avalidToken(function(result){
                 let data = {
                         HEADER: {},
-                        PARAMS: {id:commonUtil.getCookie("_userId")},
+                        PARAMS: {id:_this.$nkUtil.getCookie("_userId")},
                         SERVICE: "ShopService.queryCart"
                     };
                 _this.$axios({
-                    url: commonUtil.serverUri(),
+                    url: _this.$nkUtil.serverUri(),
                     method: "post",
                     data: data
                 }).then(function(response) {
@@ -137,7 +104,7 @@ export default {
                         document.title = response.data.cartList.length>0 ? ("购物车("+response.data.cartList.length+")"):"购物车"
                         window.postMessage("updataCartsCount--"+_this.cartsData.length,"*")
                     } else {
-                        alert(response.data.msg)
+                        this.$nkUtil.toast("warn",response.data.msg)
                     }
                 });
             },function(err){
@@ -183,7 +150,7 @@ export default {
             let _this = this;
 			this.$axios(
             {
-                url: commonUtil.serverUri(),
+                url: _this.$nkUtil.serverUri(),
                 method: "post",
                 data: data
             }).then(function(response) 
@@ -194,7 +161,7 @@ export default {
                     _this.changeCheckbox(item.id)
                     window.postMessage("updataCartsCount--"+_this.cartsData.length,"*")
                 } else {
-                    alert(response.data.msg)
+                    this.$nkUtil.toast("warn",response.data.msg)
                 }
 			});
         },
@@ -204,14 +171,14 @@ export default {
         },
         saveProNum:function (item){
             let _this = this
-            this.avalidToken(function(result){
+            this.$nkUtil.avalidToken(function(result){
                 let data = {
                         HEADER: {},
                         PARAMS: {id:item.id,num:item.num},
                         SERVICE: "ShopService.updateProductionNum"
                     };
                 _this.$axios({
-                    url: commonUtil.serverUri(),
+                    url: _this.$nkUtil.serverUri(),
                     method: "post",
                     data: data
                 }).then(function(response) {
@@ -224,7 +191,7 @@ export default {
             })
         },
         createOrder:function(){ // 结算
-            commonUtil.setCookie("_shouldPushHistory","true")
+            this.$nkUtil.setCookie("_shouldPushHistory","true")
             let proList = []
             for(let i=0;i<this.selectProIds.length;i++){
                 for(let j=0;j<this.cartsData.length;j++){
@@ -235,7 +202,7 @@ export default {
                         ele.num = item.num
                         ele.price = item.price
                         ele.itemId = item.itemId
-                        ele.userId = commonUtil.getCookie("_userId")
+                        ele.userId = this.$nkUtil.getCookie("_userId")
                         proList.push(ele)
                         break
                     }
@@ -249,17 +216,17 @@ export default {
             }
 			let _this = this
 			_this.$axios({
-				url: commonUtil.serverUri(),
+				url: _this.$nkUtil.serverUri(),
 				method: "post",
 				data: data
 			}).then(function(response) {
 				_this.showComno = false
 				console.log(response.data)
 				if (response.data.status === "success") {
-					commonUtil.setCookie("_serials",response.data.serials)
+					_this.$nkUtil.setCookie("_serials",response.data.serials)
 					_this.$router.push({name:"XMOrder",query:{serials:response.data.serials}})
 				} else {
-					alert(response.data.msg)
+					this.$nkUtil.toast("warn",response.data.msg)
 				}
 			});
         },
@@ -277,7 +244,7 @@ export default {
 
 			let _this = this;
 			this.$axios({
-				url: commonUtil.serverUri(),
+				url: _this.$nkUtil.serverUri(),
 				method: "post",
 				data: data
 			})
@@ -293,7 +260,7 @@ export default {
                         console.log(e)
                     }
                 } else {
-                    alert(response.data.msg)
+                    this.$nkUtil.toast("warn",response.data.msg)
                 }
 			})
         },
@@ -304,12 +271,12 @@ export default {
             // 查询商品详情
 			let data = {
                 HEADER: {},
-                PARAMS: {id:Number(item.id),userId:commonUtil.getCookie("_userId"),itemId:item.itemId,type:item.type},
+                PARAMS: {id:Number(item.id),userId:this.$nkUtil.getCookie("_userId"),itemId:item.itemId,type:item.type},
                 SERVICE: "ShopService.updateProductionType"
 			}
 			let _this = this;
 			this.$axios({
-				url: commonUtil.serverUri(),
+				url: _this.$nkUtil.serverUri(),
 				method: "post",
 				data: data
 			})
@@ -323,7 +290,7 @@ export default {
                     }
 
                 } else {
-                    alert(response.data.msg)
+                    this.$nkUtil.toast("warn",response.data.msg)
                 }
 			})
         },

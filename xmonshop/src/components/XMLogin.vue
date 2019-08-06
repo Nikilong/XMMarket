@@ -1,8 +1,5 @@
 <template>
   <div class="container">
-    <!-- 提醒类 -->
-		<confirm v-model="showConfirm.show" :content="showConfirm.content" :show-cancel-button="false"></confirm>
-    <toast v-model="showToast.show" :type="showToast.type">{{showToast.content}}</toast>
     <!-- 登录界面 -->
     <div>   
       <transition name="v-animate-bounce">
@@ -72,7 +69,6 @@
 
 <script>
 import {Loading,Toast,Confirm,Icon} from 'vux'
-import { setTimeout } from 'timers'
 
 export default {
   name: "xmlogin",
@@ -131,20 +127,11 @@ export default {
     }, 0);
   },
   methods: {
-    XMToast:function(type,content){
-      this.showToast.show = true
-      this.showToast.type = type
-      this.showToast.content = content
-    },
-    XMComfirm:function(content){
-      this.showConfirm.show = true
-      this.showConfirm.content = content
-    },
     login: function() {
       if (String(this.user.account).trim() === "") {
-        this.XMToast("cancel","账号不能为空")
+        this.$nkUtil.toast("cancel","账号不能为空")
       } else if (String(this.user.password.trim()) === "") {
-        this.XMToast("cancel","密码不能为空")
+        this.$nkUtil.toast("cancel","密码不能为空")
       } else {
         this.$vux.loading.show({text: '登录中'})
         let data = {
@@ -165,7 +152,7 @@ export default {
             _this.$vux.loading.hide();
             console.log(response.data);
             if (response.data.status === "success") {
-              _this.XMToast("success",'登陆成功')
+              _this.$nkUtil.toast("success",'登陆成功')
 
               let userMsg = response.data.userMsg; 
               _this.$nkUtil.setCookie("_accesstoken",userMsg.accesstoken,new Date(userMsg.expire_time))
@@ -187,13 +174,13 @@ export default {
                 }
               }, 1000);
             } else {
-              _this.XMComfirm(response.data.msg)
+              _this.$nkUtil.toast("warn",response.data.msg)
             }
           },
           function(err) {
             console.log(err.response.data)
             _this.$vux.loading.hide();
-            _this.XMComfirm(err.response.data.error.message)
+            _this.$nkUtil.toast("warn",err.response.data.error.message)
           }
         );
       }
@@ -227,7 +214,7 @@ export default {
     },
     changePassword: function() { //修改密码
       if (this.$refs.newOriPwd[0].value != this.$refs.newOriPwdConfirm[0].value && this.$refs.newOriPwd[0].value != '') {
-        this.XMToast("cancel",'确认密码和密码不一致')
+        this.$nkUtil.toast("cancel",'确认密码和密码不一致')
         return;
       }
 
@@ -241,7 +228,7 @@ export default {
         dataMap[item.dsName] = item.value || '';
       }
       if (nullTip != '') {
-        this.XMToast("cancel",nullTip)
+        _this.$nkUtil.toast("cancel",nullTip)
         return;
       }
       // console.log(dataMap);
@@ -259,7 +246,7 @@ export default {
         console.log(response.data);
         if (response.data.status === "success") {
           
-          _this.XMToast("success","修改密码成功")
+          _this.$nkUtil.toast("success","修改密码成功")
           setTimeout(() => {
             for (let i = 0; i < _this.userPwd.length; i++) {
               _this.userPwd[i].value = "";
@@ -267,17 +254,17 @@ export default {
             _this.showNewForm(2)
           }, 1000);
         } else {
-          _this.XMComfirm(response.data.msg)
+          _this.$nkUtil.toast("warn",response.data.msg)
         }
       });
     },
     addNewUser: function() { //创建新用户
       if (this.checkAccountTips.show == true && this.checkAccountTips.type==="cancel") {
-          this.XMToast("cancel",'账号已被注册')
+          this.$nkUtil.toast("cancel",'账号已被注册')
           return;
       }
       if (this.$refs.password[0].value != this.$refs.passwordConfirm[0].value && this.$refs.password[0].value != '' ) {
-        this.XMToast("cancel",'确认密码和密码不一致')
+        this.$nkUtil.toast("cancel",'确认密码和密码不一致')
         return;
       }
 
@@ -291,7 +278,7 @@ export default {
         dataMap[item.dsName] = item.value || '';
       }
       if (nullTip != '') {
-        this.XMToast("cancel",nullTip)
+        this.$nkUtil.toast("cancel",nullTip)
         return;
       }
       // let dataMap = {
@@ -315,7 +302,7 @@ export default {
       }).then(function(response) {
         console.log(response.data);
         if (response.data.status === "success") {
-          _this.XMToast("success","注册成功")
+          _this.$nkUtil.toast("success","注册成功")
            setTimeout(() => {
              for (let i = 0; i < _this.userNew.length; i++) {
                _this.userNew[i].value = "";
@@ -323,7 +310,7 @@ export default {
             _this.showNewForm(1)
           }, 1000);
         } else {
-          _this.XMComfirm(response.data.msg)
+          _this.$nkUtil.toast("warn",response.data.msg)
         }
       });
     },
@@ -341,7 +328,7 @@ export default {
     },
     checkAccountExist:function(showToast){  // 检查账号
       if (this.$refs.account[0].value.trim() === "") {
-          this.XMToast("cancel","账号不能为空")
+          this.$nkUtil.toast("cancel","账号不能为空")
           return;
         }
         let data = {
@@ -363,27 +350,17 @@ export default {
               _this.checkAccountTips.show = true
               _this.checkAccountTips.type = response.data.status === "success" ? "success" : "cancel"
             }else{
-              _this.XMToast("text",response.data.msg)
+              _this.$nkUtil.toast("text",response.data.msg)
             }
           },
           function(err) {
             console.log(err.response.data);
             if(showToast != false){
-              _this.XMComfirm(err.response.data.error.message)
+              _this.$nkUtil.toast("warn",err.response.data.error.message)
             }
           }
         );
     },
-    // aaaa(){
-    //   this.$nkUtil.ask()
-    // },
-    // bbbb(){
-    //   // this.$nkUtil.toast()
-    //   console.log("bbbbb0----")
-    //   this.$nkUtil.toast("warn","helloworld")
-    //   // this.$store.dispatch('toastCenter/showToast',{text:'hello world',type:undefined}) 
-    //   // this.$store.dispatch('toastCenter/showToast',{text:'hello world',type:"warn"}) 
-    // },
   }
 };
 </script>

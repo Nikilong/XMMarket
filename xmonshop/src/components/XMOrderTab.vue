@@ -48,7 +48,6 @@
 
 <script>
 
-import commonUtil from "../common/common"
 import { Tab, TabItem  } from "vux"
 
 
@@ -67,52 +66,20 @@ export default {
     },
     computed: {},
     methods: {
-        avalidToken:function(callback,failedCallback) //检查token是否有效
-        {
-            let userId = commonUtil.getCookie("_userId")
-            let token = commonUtil.getCookie("_accesstoken")
-
-            let result = {}
-            if(userId.trim().length > 0 && token.trim().length > 0){
-                let data = {
-                    HEADER: {},
-                    PARAMS: {userId:userId,accesstoken:token},
-                    SERVICE: "LoginService.validToken"
-                }
-                let _this = this;
-                this.$axios({
-                    url: commonUtil.serverUri(),
-                    method: "post",
-                    data: data
-                })
-                .then(function(response){
-                        console.log(response.data)
-                        if (response.data.status === "success") {
-                            callback && callback(response.data)
-                        } else {
-                            failedCallback && failedCallback(response.data)
-                        }
-                })
-            }else{
-                result.status = "failed"
-                result.msg = "userId或者acctoken不存在"
-                failedCallback && failedCallback(result)
-            }
-        },
         onItemClick:function(index){
             // console.log(a,b)
             this.selectTabIndex = index
         },
         queryCarts:function(){
             let _this = this
-            this.avalidToken(function(result){
+            this.$nkUtil.avalidToken(function(result){
                 let data = {
                         HEADER: {},
-                        PARAMS: {id:commonUtil.getCookie("_userId")},
+                        PARAMS: {id:_this.$nkUtil.getCookie("_userId")},
                         SERVICE: "ShopService.queryCart"
                     };
                 _this.$axios({
-                    url: commonUtil.serverUri(),
+                    url: _this.$nkUtil.serverUri(),
                     method: "post",
                     data: data
                 }).then(function(response) {
@@ -122,7 +89,7 @@ export default {
                         console.log("8989",_this.ordersData)
                         _this.showEmptyOrderMsg = response.data.cartList.length>0 ? false :true
                     } else {
-                        alert(response.data.msg)
+                        this.$nkUtil.toast("warn",response.data.msg)
                     }
                 });
             },function(err){
@@ -134,7 +101,7 @@ export default {
     },
     created: function() {
         window.postMessage("hideTabbar","*")
-        let index = commonUtil.getQueryString("tabIndex")
+        let index = this.$nkUtil.getQueryString("tabIndex")
         console.log(["0","1","2","3","4","5"].indexOf(index))
         if(["0","1","2","3","4","5"].indexOf(index) > -1){
             this.selectTabIndex = Number(index)

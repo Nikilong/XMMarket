@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import commonUtil from './common/common'
 import {Tabbar, TabbarItem, Confirm, Toast} from "vux"
 import { mapState, mapMutations } from "vuex";
 
@@ -99,38 +98,6 @@ export default {
     hideConfirm:function(){
         this.$store.dispatch('toastCenter/hideToast') 
     },
-    avalidToken:function(callback,failedCallback) //检查token是否有效
-    {
-      let userId = commonUtil.getCookie("_userId")
-      let token = commonUtil.getCookie("_accesstoken")
-
-      let result = {}
-      if(userId.trim().length > 0 && token.trim().length > 0){
-        let data = {
-          HEADER: {},
-          PARAMS: {userId:userId,accesstoken:token},
-          SERVICE: "LoginService.validToken"
-        }
-        let _this = this;
-        this.$axios({
-          url: commonUtil.serverUri(),
-          method: "post",
-          data: data
-        })
-        .then(function(response){
-            console.log(response.data)
-            if (response.data.status === "success") {
-              callback && callback(response.data)
-            } else {
-              failedCallback && failedCallback(response.data)
-            }
-        })
-      }else{
-        result.status = "failed"
-        result.msg = "userId或者acctoken不存在"
-        failedCallback && failedCallback(result)
-      }
-    },
     handleMessage:function(msg){
      
       if(msg.data === "showHome"){
@@ -168,14 +135,14 @@ export default {
     updateCart:function() // 更新购物车数量
 		{
       let _this = this
-      this.avalidToken(function(resu){
+      this.$nkUtil.avalidToken(function(resu){
         let data = {
           HEADER: {},
-          PARAMS: {id:commonUtil.getCookie("_userId")},
+          PARAMS: {id:_this.$nkUtil.getCookie("_userId")},
           SERVICE: "ShopService.queryCart"
         };
         _this.$axios({
-          url: commonUtil.serverUri(),
+          url: _this.$nkUtil.serverUri(),
           method: "post",
           data: data
         }).then(function(response) {

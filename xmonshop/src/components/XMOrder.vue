@@ -26,7 +26,6 @@
 
 <script>
 
-import commonUtil from "../common/common"
 import { Cell,Group,Confirm } from "vux"
 
 export default {
@@ -53,7 +52,7 @@ export default {
     },
     methods:{
         creatOrder(){
-            let serials = commonUtil.getCookie("_serials")
+            let serials = this.$nkUtil.getCookie("_serials")
             let data = {
 				HEADER: {},
 				PARAMS: {serials:serials,address_id:this.selectAddress.id},
@@ -61,7 +60,7 @@ export default {
             }
 			let _this = this
 			_this.$axios({
-				url: commonUtil.serverUri(),
+				url: _this.$nkUtil.serverUri(),
 				method: "post",
 				data: data
 			}).then(function(response) {
@@ -69,12 +68,12 @@ export default {
 				if (response.data.status === "success") {
                     _this.toastShow.showPay = true
 				} else {
-					alert(response.data.msg)
+					this.$nkUtil.toast("warn",response.data.msg)
 				}
 			});
         },
         queryOrder(){
-            let serials = commonUtil.getCookie("_serials")
+            let serials = this.$nkUtil.getCookie("_serials")
 			let data = {
 				HEADER: {},
 				PARAMS: {serials:serials},
@@ -82,7 +81,7 @@ export default {
 			}
 			let _this = this
 			_this.$axios({
-				url: commonUtil.serverUri(),
+				url: _this.$nkUtil.serverUri(),
 				method: "post",
 				data: data
 			}).then(function(response) {
@@ -90,17 +89,17 @@ export default {
 				if (response.data.status === "success") {
 					_this.productionData = response.data.RESULT
 				} else {
-					alert(response.data.msg)
+					this.$nkUtil.toast("warn",response.data.msg)
 				}
 			});
         },
         openAddressList(){
-            commonUtil.setCookie("_selectAddressOnly","false")
+            this.$nkUtil.setCookie("_selectAddressOnly","false")
             this.$router.replace("addressList")
         },
         backConfirmCancel(){
-            console.log("commonUtil.pushHistory()")
-            commonUtil.pushHistory()
+            console.log("---pushHistory()")
+            this.$nkUtil.pushHistory()
         },
         backConfirmOK(){
             window.history.back()
@@ -126,9 +125,9 @@ export default {
         // 查询订单
         this.queryOrder()
         // 是否应该pushhistroy
-        if(commonUtil.getCookie("_shouldPushHistory") === "true"){
-            commonUtil.setCookie("_shouldPushHistory","false")
-            commonUtil.pushHistory()
+        if(this.$nkUtil.getCookie("_shouldPushHistory") === "true"){
+            this.$nkUtil.setCookie("_shouldPushHistory","false")
+            this.$nkUtil.pushHistory()
         }
         // 监听返回
         window.addEventListener("popstate",this.goback,false)

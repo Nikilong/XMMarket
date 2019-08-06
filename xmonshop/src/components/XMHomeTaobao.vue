@@ -33,7 +33,6 @@
 
 <script>
 
-import commonUtil from "../common/common";
 import { Loading } from "vux";
 
 
@@ -399,14 +398,14 @@ export default {
   },
   computed: {
     userName: function() {
-      return "欢迎您," + commonUtil.getCookie("_userName") + "!";
+      return "欢迎您," + this.$nkUtil.getCookie("_userName") + "!";
     }
   },
   methods: {
     logout: function() {
-      commonUtil.setCookie("_accesstoken", "");
-      commonUtil.setCookie("_account", "");
-      commonUtil.setCookie("_userName", "");
+      this.$nkUtil.setCookie("_accesstoken", "");
+      this.$nkUtil.setCookie("_account", "");
+      this.$nkUtil.setCookie("_userName", "");
       this.$emit("logoutEvent", { status: "success", msg: "注销成功!!!" });
 		},
 		openItem:function(url){

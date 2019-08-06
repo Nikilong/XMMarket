@@ -18,7 +18,6 @@
 
 <script>
 
-import commonUtil from "../common/common"
 import { Group,XInput, XAddress, ChinaAddressV4Data, XButton, Value2nameFilter as value2name } from 'vux'
 import { constants } from 'fs';
 
@@ -49,13 +48,13 @@ export default {
                 let ele = this.inputData[key]
                 if(ele.value.trim() === ""){
                     let errStr = `《${ele.dsName}》不能为空`
-                    alert(errStr)
+                    this.$nkUtil.toast("warn",errStr)
                     return
                 }else{
                     posData[key] = ele.value
                 }
             }
-            posData.senderId = commonUtil.getCookie('_userId')
+            posData.senderId = this.$nkUtil.getCookie('_userId')
             posData.id = this.addressId
             let serverUri = this.isNew ? "AddressService.addNewAddress" : "AddressService.saveAddress"
 			let data = {
@@ -66,7 +65,7 @@ export default {
             console.log(posData)
 			let _this = this;
 			this.$axios({
-					url: commonUtil.serverUri(),
+					url: _this.$nkUtil.serverUri(),
 					method: "post",
 					data: data
 				}).then(function(response) {
@@ -75,7 +74,7 @@ export default {
 					if (response.data.status === "success") {
 						_this.$router.push("addressList")
 					} else {
-						alert("无数据")
+						this.$nkUtil.toast("warn","无数据")
 					}
 				});
 
@@ -93,7 +92,7 @@ export default {
         },
     },
     created(){
-        this.isNew = commonUtil.getQueryString("isNew") === "true" ? true : false
+        this.isNew = this.$nkUtil.getQueryString("isNew") === "true" ? true : false
         if(!this.isNew){
             let params = this.$route.params
             this.inputData.name.value = params.name

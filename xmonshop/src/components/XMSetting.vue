@@ -99,80 +99,47 @@
 
 <script>
 
-import commonUtil from "../common/common"
 import { Loading,Cell,Group,Grid, GridItem,Confirm } from "vux"
 
 
 export default {
-  name: "xmboss",
-  components: {
-    Loading,Cell,Group,Grid, GridItem,Confirm
+	name: "xmboss",
+	components: {
+		Loading,Cell,Group,Grid, GridItem,Confirm
+		},
+	props:[],
+	data() {
+		return {
+		userName:"",  // 登录用户名
+		showTodoConfirm:false, // 提示正在开放中
+		}
 	},
-   props:[],
-  data() {
-    return {
-	  userName:"",  // 登录用户名
-	  showTodoConfirm:false, // 提示正在开放中
-    }
-  },
-  computed: {},
-  methods: {
-    avalidToken:function(callback,failedCallback) //检查token是否有效
+	computed: {},
+	methods: {
+		showTodoTips:function(index){
+			this.showTodoConfirm = true
+		},
+		logout: function() 
 		{
-			let userId = commonUtil.getCookie("_userId")
-			let token = commonUtil.getCookie("_accesstoken")
-
-			let result = {}
-			if(userId.trim().length > 0 && token.trim().length > 0){
-				let data = {
-					HEADER: {},
-					PARAMS: {userId:userId,accesstoken:token},
-					SERVICE: "LoginService.validToken"
-				}
-				let _this = this;
-				this.$axios({
-					url: commonUtil.serverUri(),
-					method: "post",
-					data: data
-				})
-				.then(function(response){
-						console.log(response.data)
-						if (response.data.status === "success") {
-							callback && callback(response.data)
-						} else {
-							failedCallback && failedCallback(response.data)
-						}
-				})
-			}else{
-				result.status = "failed"
-				result.msg = "userId或者acctoken不存在"
-				failedCallback && failedCallback(result)
-			}
+		this.$nkUtil.setCookie("_accesstoken", "");
+		this.$nkUtil.setCookie("_account", "");
+		this.$nkUtil.setCookie("_userName", "");
+			// this.$emit("logoutEvent", { status: "success", msg: "注销成功!!!" });
+			this.$router.push("login")
+		},
 	},
-	showTodoTips:function(index){
-		this.showTodoConfirm = true
-	},
-    logout: function() 
-    {
-      commonUtil.setCookie("_accesstoken", "");
-      commonUtil.setCookie("_account", "");
-      commonUtil.setCookie("_userName", "");
-		// this.$emit("logoutEvent", { status: "success", msg: "注销成功!!!" });
-		this.$router.push("login")
-	},
-  },
-  created: function() {
-    window.postMessage("showSetting","*")
-    
-    let _this = this
-		this.avalidToken(function(data){
+	created: function() {
+		window.postMessage("showSetting","*")
+		
+		let _this = this
+		this.$nkUtil.avalidToken(function(data){
 			// 检测用户是否登录
-			_this.userName = commonUtil.getCookie("_userName") || ""
+			_this.userName = _this.$nkUtil.getCookie("_userName") || ""
 			_this.canEdit = data.editRight> 5 ? true : false
 		},function(err){
 			_this.userName = ""
 		})
-  },
+	},
 };
 </script>
 

@@ -16,7 +16,6 @@
 
 <script>
 
-import commonUtil from "../common/common"
 import { Cell,Group } from "vux"
 
 export default {
@@ -34,7 +33,7 @@ export default {
             this.$router.replace({path:'./newAddress',query:{isNew:"true"}})
         },
         queryAddressList(){
-            let userId = commonUtil.getCookie('_userId')
+            let userId = this.$nkUtil.getCookie('_userId')
             if(userId.trim().length === 0){
                 this.$router.push({path:"/login",query:{type:"2"}})
             }
@@ -45,7 +44,7 @@ export default {
                 };
 			let _this = this;
 			this.$axios({
-					url: commonUtil.serverUri(),
+					url: _this.$nkUtil.serverUri(),
 					method: "post",
 					data: data
 				}).then(function(response) {
@@ -67,7 +66,7 @@ export default {
             this.$router.replace({name:"XMNewAddress",params:params})
         },
         selectAddress(index){
-            let selectAddressOnly =  commonUtil.getCookie("_selectAddressOnly")
+            let selectAddressOnly =  this.$nkUtil.getCookie("_selectAddressOnly")
             if(selectAddressOnly === "false"){
                 let params = this.addsData[index]
                 this.$router.replace({name:"XMOrder",params:params})
@@ -76,9 +75,9 @@ export default {
     },
     created:function(){
         window.postMessage("hideTabbar","*")
-        let selectAddressOnly =  commonUtil.getQueryString("selectAddressOnly")
+        let selectAddressOnly =  this.$nkUtil.getQueryString("selectAddressOnly")
         if(selectAddressOnly === "true"){
-            commonUtil.setCookie("_selectAddressOnly","true")
+            this.$nkUtil.setCookie("_selectAddressOnly","true")
         }
 
         this.queryAddressList()
