@@ -6,8 +6,6 @@
 		<confirm v-model="isShowConfirm" :content="confirmText" :show-cancel-button="false" @on-hide="hideConfirm"></confirm>
     <toast v-model="isShowToast" :type="toastType" @on-hide="hideConfirm">{{confirmText}}</toast>
     
-
-    <!-- <div>{{aaa}}</div> -->
     <div class="ft_bar" v-if="showTabbar">
       <div class="tool_bar">
           <tabbar @on-index-change="tabbarDidClick">
@@ -167,10 +165,6 @@ export default {
 html,body,#app{
   margin: 0;
   padding: 0;
-  width:100%;
-  height:100%;
-  overflow-x:hidden;
-  /* overflow-y: scroll; */
 }
 p{
   margin-block-start: 0;

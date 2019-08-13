@@ -8,6 +8,7 @@ import store from '../store'
 
 let serverUri = function() {
     return "http://localhost:4001/servers?m" + Math.random();
+    // return "http://120.78.165.47:4001/servers?m" + Math.random();
     // return "http://172.20.105.87:4001/servers?m" + Math.random();
     // return "http://192.168.1.102:4001/servers?m" + Math.random();
     // return "http://192.168.1.106:4001/servers?m" + Math.random();
@@ -57,7 +58,6 @@ let scrollAnimation = function(currentY, targetY) {
     // 计算需要移动的距离
     let needScrollTop = targetY - currentY
     let _currentY = currentY
-    console.log(needScrollTop, _currentY, currentY)
     setTimeout(() => {
         // 一次调用滑动帧数，每次调用会不一样
         const dist = Math.ceil(needScrollTop / 10)

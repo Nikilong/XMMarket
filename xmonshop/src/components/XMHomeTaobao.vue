@@ -18,7 +18,7 @@
 		</p>
 		<p class="price-con">
 				<span class="c-red p-icon">¥</span>
-				<span class="c-red p-num">{{item.price<item.promotionPrice?item.price:item.promotionPrice}}</span>
+				<span class="c-red p-num">{{item.price < item.promotionPrice?item.price:item.promotionPrice}}</span>
 				<span class="r-price" v-if=" item.price != item.promotionPrice">¥{{item.price > item.promotionPrice ? item.price : item.promotionPrice}}</span>
 		</p>
 		<p class="other-info">{{item.provcity}}
