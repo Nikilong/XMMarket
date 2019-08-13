@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    body,
+    html {
+        padding: 0;
+        margin: 0;
+        font-size: 2rem;
+    }
+    
+    div {
+        text-align: center;
+        line-height: 200px;
+        background: rgb(56, 167, 102);
+    }
+    
+    .wrap {
+        background: rgb(116, 131, 129);
+    }
+    
+    .clearfix:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+    
+    .bar1 {
+        float: left;
+        width: 200px;
+        background: yellow;
+    }
+    
+    .content1 {
+        margin-left: 200px;
+        background: yellowgreen;
+    }
+    /* ------------------------------------------------ */
+    
+    .bar2 {
+        width: 200px;
+        background: skyblue;
+    }
+    
+    .content2 {
+        float: right;
+        width: calc(100% - 200px);
+        background: yellowgreen;
+    }
+    /* ------------------------------------------------ */
+    
+    .content3 {
+        float: right;
+        width: calc(100% - 500px);
+        margin-right: 300px;
+        background: olive;
+        height: 500px;
+    }
+    
+    .left3 {
+        width: 200px;
+        background: blue;
+    }
+    
+    .right3 {
+        float: right;
+        width: 300px;
+        margin-right: calc(200px - 100%);
+        background: yellowgreen;
+    }
+    /* ------------------------------------------------ */
+    
+    .content6 {
+        float: right;
+        width: calc(100% - 500px);
+        margin-right: 300px;
+        background: olive;
+    }
+    
+    .left6 {
+        width: 200px;
+        background: blue;
+    }
+    
+    .right6 {
+        float: right;
+        width: 300px;
+        margin-right: calc(200px - 100%);
+        background: yellowgreen;
+    }
+    /* ------------------------------------------------ */
+    
+    .content4 {
+        margin-right: 300px;
+        margin-left: 200px;
+    }
+    
+    .left4 {
+        float: left;
+        width: 200px;
+        background: blue;
+    }
+    
+    .right4 {
+        float: right;
+        width: 300px;
+        background: yellowgreen;
+    }
+    /* ------------------------------------------------ */
+    
+    .content5 {
+        position: relative;
+        margin-right: 300px;
+        margin-left: 200px;
+    }
+    
+    .content5 div {
+        float: left;
+        background: olive;
+        width: 50%;
+    }
+    
+    .content5 div:nth-child(1) {
+        background: yellow;
+    }
+    
+    .left5 {
+        float: left;
+        width: 200px;
+        background: blue;
+    }
+    
+    .right5 {
+        float: right;
+        width: 300px;
+        background: yellowgreen;
+    }
+    /* -----------------------float---end------------------------- */
+    /* -----------------------absoulte---start------------------------- */
+    /* ------------------------------------------------ */
+    
+    .outer11 {
+        position: relative;
+    }
+    
+    .bar11 {
+        position: absolute;
+        width: 300px;
+        height: 400px;
+        background: yellow;
+    }
+    
+    .content11 {
+        margin-left: 300px;
+        height: 300px;
+        background: greenyellow;
+    }
+    
+    .outer11::after {
+        clear: both;
+        content: " ";
+        height: 0;
+        visibility: visible;
+    }
+</style>
+
+<body>
+    <!-- 1.普通  左侧(左浮,定宽),右侧 -->
+    <!-- <div class="wrap">
+        <div class="bar1">left</div>
+        <div class="content1">content</div>
+    </div> -->
+
+    <!-- 2.内容优先展示,左侧(左浮,定宽),右侧(右浮,calc宽度) -->
+    <!-- <div class="wrap">
+        <div class="content2">content</div>
+        <div class="bar2">left</div>
+    </div> -->
+
+    <!-- 3.内容优先展示,
+        中间(右浮,calc宽度,右边距)
+        左侧(定宽)
+        右侧(右浮,定宽,calc右边距) -->
+    <!-- <div class="wrap  clearfix">
+        <div class="content3">content</div>
+        <div class="right3">right</div>
+        <div class="left3">left</div>
+    </div> -->
+    <!-- 6.内容优先展示,
+        中间(右浮,calc宽度,右边距)
+        左侧(定宽)
+        右侧(右浮,定宽,calc右边距) -->
+    <!-- <div class="wrap">
+        <div class="content6">content</div>
+        <div class="right6">right</div>
+        <div class="left6">left</div>
+    </div> -->
+
+    <!-- 4.三列布局
+        中间(calc宽度,右边距,左边距)
+        左侧(左浮,定宽)
+        右侧(右浮,定宽) -->
+    <!-- <div class="wrap">
+        <div class="left4">left</div>
+        <div class="right4">right</div>
+        <div class="content4">content</div>
+    </div> -->
+
+
+    <!-- 5.四列布局
+        中间(calc宽度,右边距,左边距)
+        左侧(左浮,定宽)
+        右侧(右浮,定宽) -->
+    <!-- <div class="wrap">
+        <div class="left5">left</div>
+        <div class="right5">right</div>
+        <div class="content5">
+            <div>content1</div>
+            <div>content2</div>
+        </div>
+    </div> -->
+
+    <!-- -----------------------float---end-------------------------  -->
+    <!-- -----------------------absoulte---start-------------------------  -->
+    <!-- 11.普通  左侧(定宽,绝对定位),右侧(自适应,左边距) -->
+    <!-- 缺点:当绝对定位的高度比另外的元素高的时候,父类高度坍塌,无解,只能通过设定父类元素的高度-->
+    <div class="wrap outer11">
+        <div class="bar11">left</div>
+        <div class="content11">content</div>
+    </div>
+
+
+</body>
+
+</html>

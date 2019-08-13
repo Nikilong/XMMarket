@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .height-span {
+        display: inline-block;
+        width: 200px;
+        height: 200px;
+        background: red;
+    }
+    
+    .scroll-div {
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    ul li {
+        height: 400px;
+        line-height: 400px;
+        font-size: 100px;
+        background: olive;
+        list-style: none;
+        border-bottom: 1px white solid;
+    }
+    
+    .footer {
+        position: absolute;
+        height: 200px;
+        width: 100%;
+        top: 200px;
+        color: blanchedalmond;
+        background: yellowgreen;
+    }
+    
+    .footer-fix {
+        position: fixed;
+        height: 200px;
+        width: 100%;
+        top: 300px;
+        background: blue;
+    }
+    
+    .footer-son {
+        position: absolute;
+        top: 0;
+        left: 100px;
+        width: 100px;
+        height: 100px;
+        background: yellow;
+    }
+    
+    .footer-span {
+        position: absolute;
+        top: 0;
+        left: 100px;
+        width: 100px;
+        height: 100px;
+        background: red;
+    }
+</style>
+
+<body>
+
+    <span class="height-span">111</span>
+    <span class="height-span">111</span>
+    <span class="height-span">111</span>
+    <!-- <div class="scroll-div">
+        <ul>
+            <li>122</li>
+            <li>122</li>
+            <li>122</li>
+            <li>122</li>
+            <li>122</li>
+            <li>122</li>
+        </ul>
+    </div> -->
+    <!-- <div class="footer">
+        <div class="footer-btn">footer-btn</div>
+        <span class="footer-span">footer-span</span>
+    </div> -->
+    <div class="footer">
+        <div class="footer-son"></div>
+    </div>
+    <!-- <div class="footer">
+        <div class="footer-fix"></div>
+    </div> -->
+
+</body>
+
+</html>
