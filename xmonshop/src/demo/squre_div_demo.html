@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    .square1 {
+        width: 25%;
+        height: 25vw;
+        background: olive;
+    }
+    
+    .square2 {
+        width: 30%;
+        height: 0;
+        padding-bottom: 30%;
+        background: red;
+    }
+    
+    .square3 {
+        position: absolute;
+        width: 496px;
+        height: 196px;
+        border: 2px solid blue;
+        background-color: #fff;
+        border-radius: 15px;
+    }
+    
+    .square3::before,
+    .square3::after {
+        content: "";
+        position: absolute;
+        border: transparent solid;
+        left: 100%;
+        width: 0;
+        height: 0;
+    }
+    
+    .square3::before {
+        border-width: 30px;
+        border-left-color: blue;
+        top: 40px;
+    }
+    
+    .square3::after {
+        border-width: 28px;
+        border-left-color: #fff;
+        top: 42px;
+    }
+</style>
+
+<body>
+    <div class="square1"></div><br>
+    <div class="square2"></div><br>
+    <div class="square3"></div><br>
+</body>
+
+</html>
