@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    .clearfix::after{
+        clear: both;
+        content:'';
+        display: table;
+    }
+
+    .water-box{
+        position: absolute;
+    }
+
+</style>
+<body>
+    <div id="app" class="clearfix">
+        <div class="water-box" v-for="(item,index) in list">{{index+"----"+item.height}}</div>
+    </div>
+</body>
+<script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    var vm = new Vue({
+        el:"#app",
+        data(){
+            return{
+                aaa:"hellow",
+                list:[
+                    {"name":"1","height":100},
+                    {"name":"2","height":150},
+                    {"name":"3","height":50},
+                    {"name":"4","height":200},
+                    {"name":"5","height":300},
+                    {"name":"6","height":250},
+                    {"name":"7","height":300},
+                    {"name":"8","height":100},
+                    {"name":"9","height":300},
+                    {"name":"10","height":50},
+                    {"name":"11","height":150},
+                ]
+            }
+        },
+        methods:{
+
+        },
+        mounted(){
+           
+        }
+    })
+
+    var rowMaxN = 4;            // 每行最大的个数
+    var marginB = 10;           // 底部间距
+    var colTolH = [];  // 列总高
+    // 初始化列总高为0
+    for(var i=0;i<rowMaxN;i++){
+        colTolH[i] = 0;
+    }
+    $(function(){
+        $(".water-box").each(function(index){
+            var r = Math.random() * 255;
+            var g = Math.random() * 255;
+            var b = Math.random() * 255;
+            var curH = vm.list[index]["height"]; // 当前块高度
+
+            var minH = colTolH[0];  // 列中最低的总高度
+            var colC = 0;  // 所在列
+            for(var i in colTolH){
+                if(colTolH[i] < minH){
+                    colC = i;
+                    minH = colTolH[i]
+                }
+            }
+
+            // 设置top和left距离及其他颜色
+            $(this).css({
+                "background":"rgb("+r+","+g+","+b+")",
+                "height": curH + "px",
+                "width": 100/rowMaxN + "%",
+                "top": colTolH[colC] + "px",
+                "left" : colC * 100/rowMaxN + "%",
+                "margin-bottom": marginB + "px"
+            });
+
+            // 更新该列的总高度
+            colTolH[colC] = colTolH[colC] + curH + marginB;
+            
+        })
+    })
+
+</script>
+</html>
