@@ -1,4 +1,5 @@
 const fs = require('fs');
+const controllers = require('./controllers')
 
 
 function addControllers(router, dir) {
@@ -15,9 +16,9 @@ function addControllers(router, dir) {
         addMapping1(router,mapping);  // 方式1 
 
         */
-        var mappingList = require(__dirname + "/" + dir + "/" + f);
-        for (var index in mappingList) {
-            addMapping(router, mappingList[index]);
+        // var mappingList = require(__dirname + "/" + dir + "/" + f);
+        for (var index in controllers) {
+            addMapping(router, controllers[index]);
         }
 
     }
