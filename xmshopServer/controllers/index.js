@@ -5,6 +5,9 @@ const shopVM = require('../viewModel/shopVM') // 处理商品类相关
 const addressVM = require('../viewModel/addressVM') // 处理地址类相关
 const orderVM = require('../viewModel/orderVM') // 处理订单类相关
 
+
+const newsVM = require('../viewModel/newsVM') // 新闻模块
+
 var fn_servlet = async(ctx, next) => {
     console.log(`request for: ${ctx.request.body.SERVICE}`);
     let data = null;
@@ -23,6 +26,9 @@ var fn_servlet = async(ctx, next) => {
                     break;
                 case "OrderService":
                     data = await orderVM.orderServer(methodJson[1], ctx.request.body);
+                    break;
+                case "NewsService":
+                    data = await newsVM.newsServer(methodJson[1], ctx.request.body);
                     break;
                 default:
                     console.log("error")
