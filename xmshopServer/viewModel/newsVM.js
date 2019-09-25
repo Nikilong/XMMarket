@@ -3,37 +3,6 @@
 const request = require('request');
 const httpUtil = require('../utils/httpUtil');
         
-let fn_getHTML= function(url){
-    return new Promise((resolve, reject) => {
-        // 参数url 和 回调函数
-        http.get(url, function (res) {
-          var html = '';
-          // 绑定data事件 回调函数 累加html片段
-          res.on('data', function (data) {
-            html += data;
-          });
-      
-          res.on('end', function () {
-            // console.log(html);
-            console.log("end",html.length)
-            let resData = {}
-            resData.status = 'success'
-            resData.RESULT = html
-            resolve(resData)
-          });
-        }).on('error', function () {
-          console.log('获取数据错误');
-        });
-    }).catch(e => {
-        console.log(e)
-        let resData = {}
-        resData.status = "failed"
-        resData.msg = e.message
-        return resData
-    })
-
-}
-
 let fn_newsServer = async function(method, data) {
     let resData = {};
     try {
@@ -51,6 +20,12 @@ let fn_newsServer = async function(method, data) {
 }
 
 
+// 返回url的image的base64编码  return string
+let getBase64ImageString = function(data) {
+    let params = data.PARAMS
+    console.log("------",params.url)
+    return httpUtil.getBase64String(params.url)
+}
 // 查询新闻详情
 let getNewsDetail = function(data) {
     let params = data.PARAMS
