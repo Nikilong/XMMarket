@@ -72,6 +72,45 @@ let getNewsByChannel = function(data) {
 
 }
 
+// 搜索新闻
+let searchNews = function(data) {
+    let params = data.PARAMS
+    let resData = {}
+    console.log("------",params.keyword)
+    let keyword = ""
+    if(params.keyword){
+        keyword = encodeURI(params.keyword)
+    }
+    let weburl =`http://mbsug.ssl.so.com/sug?channel=type_webpage&caller=strict&sensitive=strict&srcg=sina_shoulang_act&word=$${keyword}&callback=__jp4`;
+    console.log(weburl)
+    return new Promise((resolve, reject) => {
+        request(weburl, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                // console.log(body) // Show the HTML for the baidu homepage.
+                // 将string类型的body数据转为JSON
+                let dict = {}
+                try{
+                    let str = body.substring(body.indexOf("(") + 1,body.indexOf(")"))
+                    dict = JSON.parse(str)
+                }catch(e){console.log(e)}
+                resData.status = 'success'
+                resData.RESULT = dict
+            }else{
+                resData.status = 'failed'
+                resData.RESULT = '无法获取数据'
+                
+            }
+            resolve(resData)
+        })
+    }).catch(e => {
+        console.log(e)
+        let resData = {}
+        resData.status = "failed"
+        resData.msg = e.message
+        return resData
+    })
+}
+
 // 下载图片
 let downloadImage = function(data) {
     let params = data.PARAMS
